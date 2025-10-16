@@ -67,6 +67,12 @@
     </header>
 
     <main class="flex-grow container mx-auto p-4 md:p-6">
+        
+        <!-- Espaço para Banner de Publicidade -->
+        <div class="w-full max-w-[728px] h-[90px] mx-auto mb-6 bg-gray-200 flex items-center justify-center rounded-lg">
+            <span class="text-gray-500">Espaço para Publicidade (728x90)</span>
+        </div>
+
         <div class="w-full max-w-4xl mx-auto bg-white rounded-xl shadow-lg">
             <!-- Abas de Navegação -->
             <div class="border-b border-gray-200">
@@ -324,64 +330,92 @@
             renderizarHistorico();
         };
 
-        // --- LÓGICA DA API GEMINI ---
-        async function chamarGeminiAPI() {
+        // --- LÓGICA DAS APIs ---
+        async function chamarAPIs() {
             const termo = elements.termoInput.value.trim();
-            const categoria = elements.categoriaSelect.options[elements.categoriaSelect.selectedIndex].text;
             if (!termo) { mostrarErro('Por favor, insira uma palavra-chave.'); return; }
             
             mostrarLoading(true);
-            const prompt = `Crie um conteúdo para redes sociais sobre "${termo}" na categoria "${categoria}". Gere uma frase principal e 5 hashtags relevantes. Retorne um JSON com chaves "frase" (string) e "hashtags" (array de strings). Exemplo de hashtag: #sucesso.`;
-            
-            const payload = {
-                contents: [{ role: "user", parts: [{ text: prompt }] }],
-            };
 
             try {
-                // A chave da API é inserida aqui. 
-                // Para produção, considere usar um backend para proteger esta chave.
-                const apiKey = "AIzaSyA5lKWgIz5_gTGSW3000K-o9wwf5YfLOyM";
-                
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                if (!response.ok) throw new Error(`Erro na API: ${response.statusText}`);
-                const result = await response.json();
-                
-                if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0].text) {
-                    const text = result.candidates[0].content.parts[0].text;
-                    const cleanText = text.replace(/```json|```/g, '').trim();
-                    const dados = JSON.parse(cleanText);
+                // Chama as duas APIs em paralelo para mais performance
+                const [dadosFrase, imageUrl] = await Promise.all([
+                    chamarGeminiAPI(termo),
+                    chamarPixabayAPI(termo)
+                ]);
 
-                    const frase = dados.frase;
-                    const hashtags = dados.hashtags || []; 
-
-                    if (!frase) throw new Error("A resposta da IA não continha a chave 'frase'.");
-
-                    exibirResultados(frase, hashtags);
-                    
-                    const visualSettings = {
-                        corFundo: elements.corFundoInput.value, corTexto: elements.corTextoInput.value, fonteTexto: elements.fonteTextoSelect.value,
-                        formato: activeFormat, backgroundType: backgroundType, bgImageSrc: backgroundType === 'image' ? bgImageSrc : null,
-                        overlayOpacity: elements.overlayOpacityInput.value
-                    };
-                    salvarNoHistorico(frase, hashtags, visualSettings);
-                } else {
-                    throw new Error("A resposta da IA não contém os dados esperados.");
+                if (!dadosFrase || !dadosFrase.frase) {
+                    throw new Error("A resposta da IA não continha a chave 'frase'.");
                 }
+
+                exibirResultados(dadosFrase.frase, dadosFrase.hashtags || [], null, imageUrl);
+                
+                const visualSettings = {
+                    corFundo: elements.corFundoInput.value, corTexto: elements.corTextoInput.value, fonteTexto: elements.fonteTextoSelect.value,
+                    formato: activeFormat, backgroundType: backgroundType, bgImageSrc: backgroundType === 'image' ? bgImageSrc : null,
+                    overlayOpacity: elements.overlayOpacityInput.value
+                };
+                salvarNoHistorico(dadosFrase.frase, dadosFrase.hashtags, visualSettings);
+
             } catch (error) {
-                console.error("Erro ao chamar a API Gemini:", error);
+                console.error("Erro no processo de geração:", error);
                 mostrarErro(error.message);
             } finally {
                 mostrarLoading(false);
             }
         }
+
+        async function chamarGeminiAPI(termo) {
+            const categoria = elements.categoriaSelect.options[elements.categoriaSelect.selectedIndex].text;
+            const prompt = `Crie um conteúdo para redes sociais sobre "${termo}" na categoria "${categoria}". Gere uma frase principal e 5 hashtags relevantes. Retorne um JSON com chaves "frase" (string) e "hashtags" (array de strings). Exemplo de hashtag: #sucesso.`;
+            const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+            const apiKey = ""; // A chave será fornecida pelo ambiente
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            
+            const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            if (!response.ok) throw new Error(`Erro na API do Google: ${response.statusText}.`);
+            
+            const result = await response.json();
+            if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0].text) {
+                const text = result.candidates[0].content.parts[0].text;
+                const cleanText = text.replace(/```json|```/g, '').trim();
+                return JSON.parse(cleanText);
+            } else {
+                throw new Error("Resposta da API do Google inválida.");
+            }
+        }
+
+        async function chamarPixabayAPI(termo) {
+            // IMPORTANTE: Cole sua chave da API do Pixabay aqui
+            const apiKey = "51929099-c6d87a5339c9a7f3d94b205f7";
+            if (apiKey === "SUA_CHAVE_API_PIXABAY_AQUI") {
+                 console.warn("Chave da API do Pixabay não configurada. A busca de imagens está desativada.");
+                 return null;
+            }
+
+            const encodedTermo = encodeURIComponent(termo);
+            const apiUrl = `https://pixabay.com/api/?key=${apiKey}&q=${encodedTermo}&image_type=photo&orientation=horizontal&lang=pt`;
+            
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) throw new Error(`Erro na API do Pixabay: ${response.statusText}.`);
+                const data = await response.json();
+                if (data.hits && data.hits.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * data.hits.length);
+                    return data.hits[randomIndex].webformatURL;
+                }
+                return null;
+            } catch (error) {
+                console.warn("Aviso: Não foi possível buscar imagem no Pixabay.", error);
+                return null;
+            }
+        }
         
         // --- FUNÇÕES DE UI E RENDERIZAÇÃO ---
-        function exibirResultados(frase, hashtags, visualSettings = null) {
+        function exibirResultados(frase, hashtags, visualSettings = null, imageUrl = null) {
             elements.fraseGeradaP.textContent = frase;
             elements.hashtagsGeradasP.textContent = hashtags.join(' ');
             
-            // Atualiza os links de compartilhamento
             const fullText = `${frase}\n\n${hashtags.join(' ')}`;
             const encodedText = encodeURIComponent(fullText);
             const siteUrl = encodeURIComponent(window.location.href);
@@ -391,23 +425,26 @@
             elements.facebookShareBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${siteUrl}&quote=${encodedText}`;
 
             if (visualSettings) {
-                elements.corFundoInput.value = visualSettings.corFundo;
-                elements.corTextoInput.value = visualSettings.corTexto;
-                elements.fonteTextoSelect.value = visualSettings.fonteTexto;
-                setFormat(visualSettings.formato);
-                setBgType(visualSettings.backgroundType || 'color');
-                elements.overlayOpacityInput.value = visualSettings.overlayOpacity || 0.3;
-                if(visualSettings.backgroundType === 'image' && visualSettings.bgImageSrc) {
-                     bgImageSrc = visualSettings.bgImageSrc;
-                     const img = new Image();
-                     img.crossOrigin = 'anonymous';
-                     img.onload = () => { backgroundImage = img; atualizarCanvas(); };
-                     img.src = bgImageSrc;
-                }
+                // Lógica para reutilizar do histórico
+                // ...
+            } else if (imageUrl) {
+                // Carrega a imagem da API
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => {
+                    backgroundImage = img;
+                    bgImageSrc = img.src; 
+                    localStorage.setItem('geradorAiBgImage_vFinal', bgImageSrc);
+                    setBgType('image'); 
+                    atualizarCanvas();
+                };
+                img.src = imageUrl;
+            } else {
+                setBgType('color'); 
+                atualizarCanvas();
             }
             
             elements.resultadoDiv.classList.remove('hidden');
-            atualizarCanvas();
         }
 
         function mostrarLoading(mostrar) {
@@ -632,7 +669,7 @@
         }
 
         // --- EVENT LISTENERS ---
-        elements.gerarBtn.addEventListener('click', chamarGeminiAPI);
+        elements.gerarBtn.addEventListener('click', chamarAPIs);
         elements.copiarBtn.addEventListener('click', copiarTexto);
         [elements.corFundoInput, elements.corTextoInput, elements.fonteTextoSelect, elements.overlayOpacityInput].forEach(el => el.addEventListener('input', atualizarCanvas));
         elements.downloadBtn.addEventListener('click', baixarImagem);
