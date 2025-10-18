@@ -69,8 +69,9 @@
     <main class="flex-grow container mx-auto p-4 md:p-6">
         
         <!-- Espaço para Banner de Publicidade -->
-        <div class="w-full max-w-[728px] h-[90px] mx-auto mb-6 bg-gray-200 flex items-center justify-center rounded-lg">
-            <span class="text-gray-500">Espaço para Publicidade (728x90)</span>
+        <div class="w-full max-w-[728px] h-[90px] mx-auto mb-6 bg-gray-200 flex items-center justify-center rounded-lg overflow-hidden">
+            <!-- Para trocar o banner, substitua o link 'src' abaixo pela URL da sua imagem -->
+            <img src="https://placehold.co/728x90/e2e8f0/64748b?text=Seu+Anúncio+Aqui" alt="Espaço para Publicidade" class="w-full h-full object-cover">
         </div>
 
         <div class="w-full max-w-4xl mx-auto bg-white rounded-xl shadow-lg">
@@ -94,6 +95,7 @@
                         <label for="categoria" class="block text-lg font-medium text-gray-700 mb-2">2. Categoria</label>
                         <select id="categoria" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500 transition">
                              <option value="motivacional">Motivacional</option>
+                             <option value="romantica">Romântica</option>
                             <option value="vendas">Vendas / CTA</option>
                             <option value="produto_digital">Produto Digital</option>
                             <option value="storytelling">Storytelling</option>
@@ -250,11 +252,20 @@
     </div>
     
     <footer class="bg-white text-center py-4 mt-8 shadow-inner">
-        <p class="text-gray-600">Copyright &copy; <span id="ano"></span> Gerador de Frases. Todos os direitos reservados.</p>
+        <!-- Links Externos Ocultos -->
+        <div class="mb-4">
+            <p class="text-sm font-semibold text-gray-700">Links Úteis:</p>
+            <div id="footer-links" class="flex justify-center gap-x-6 gap-y-2 flex-wrap px-4">
+                <!-- Links serão inseridos aqui via JS -->
+            </div>
+        </div>
+        
+        <p class="text-gray-600 text-sm">Copyright &copy; <span id="ano"></span> Gerador de Frases. Todos os direitos reservados.</p>
     </footer>
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
+
         // --- SELEÇÃO DE ELEMENTOS ---
         const elements = {
             termoInput: document.getElementById('termo'),
@@ -328,6 +339,7 @@
             loadImage(logoSrc, true);
             loadImage(bgImageSrc, false);
             renderizarHistorico();
+            renderizarLinksRodape();
         };
 
         // --- LÓGICA DAS APIs ---
@@ -338,7 +350,6 @@
             mostrarLoading(true);
 
             try {
-                // Chama as duas APIs em paralelo para mais performance
                 const [dadosFrase, imageUrl] = await Promise.all([
                     chamarGeminiAPI(termo),
                     chamarPixabayAPI(termo)
@@ -366,29 +377,38 @@
         }
 
         async function chamarGeminiAPI(termo) {
+            const apiKey = "AIzaSyD3APS_El2XEojX-j9r1DdDRV3ktgnKSyo"; 
+            if (apiKey === "SUA_CHAVE_API_GEMINI_AQUI" || apiKey === "") {
+                throw new Error("API Key do Google não configurada. Edite o código-fonte para adicionar sua chave.");
+            }
+
             const categoria = elements.categoriaSelect.options[elements.categoriaSelect.selectedIndex].text;
             const prompt = `Crie um conteúdo para redes sociais sobre "${termo}" na categoria "${categoria}". Gere uma frase principal e 5 hashtags relevantes. Retorne um JSON com chaves "frase" (string) e "hashtags" (array de strings). Exemplo de hashtag: #sucesso.`;
-            const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
-            const apiKey = ""; // A chave será fornecida pelo ambiente
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            const payload = { 
+                contents: [{ role: "user", parts: [{ text: prompt }] }],
+                generationConfig: { responseMimeType: "application/json" }
+            };
+            
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
             
             const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-            if (!response.ok) throw new Error(`Erro na API do Google: ${response.statusText}.`);
+            if (!response.ok) {
+                 const errorBody = await response.json().catch(()=>({}));
+                 throw new Error(`Erro na API do Google: ${errorBody?.error?.message || response.statusText}.`);
+            }
             
             const result = await response.json();
             if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0].text) {
                 const text = result.candidates[0].content.parts[0].text;
-                const cleanText = text.replace(/```json|```/g, '').trim();
-                return JSON.parse(cleanText);
+                return JSON.parse(text);
             } else {
                 throw new Error("Resposta da API do Google inválida.");
             }
         }
 
         async function chamarPixabayAPI(termo) {
-            // IMPORTANTE: Cole sua chave da API do Pixabay aqui
-            const apiKey = "51929099-c6d87a5339c9a7f3d94b205f7";
-            if (apiKey === "SUA_CHAVE_API_PIXABAY_AQUI") {
+            const apiKey = "51929099-c6d87a5339c9a7f3d94b205f7"; 
+            if (apiKey === "SUA_CHAVE_API_PIXABAY_AQUI" || apiKey === "") {
                  console.warn("Chave da API do Pixabay não configurada. A busca de imagens está desativada.");
                  return null;
             }
@@ -425,10 +445,20 @@
             elements.facebookShareBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${siteUrl}&quote=${encodedText}`;
 
             if (visualSettings) {
-                // Lógica para reutilizar do histórico
-                // ...
+                elements.corFundoInput.value = visualSettings.corFundo;
+                elements.corTextoInput.value = visualSettings.corTexto;
+                elements.fonteTextoSelect.value = visualSettings.fonteTexto;
+                setFormat(visualSettings.formato);
+                setBgType(visualSettings.backgroundType || 'color');
+                elements.overlayOpacityInput.value = visualSettings.overlayOpacity || 0.3;
+                if(visualSettings.backgroundType === 'image' && visualSettings.bgImageSrc) {
+                     bgImageSrc = visualSettings.bgImageSrc;
+                     const img = new Image();
+                     img.crossOrigin = 'anonymous';
+                     img.onload = () => { backgroundImage = img; atualizarCanvas(); };
+                     img.src = bgImageSrc;
+                }
             } else if (imageUrl) {
-                // Carrega a imagem da API
                 const img = new Image();
                 img.crossOrigin = 'anonymous';
                 img.onload = () => {
@@ -667,6 +697,30 @@
                 copiarFallback();
             }
         }
+        
+        // --- RENDERIZAR LINKS DO RODAPÉ ---
+        const renderizarLinksRodape = () => {
+            const linksContainer = document.getElementById('footer-links');
+            if (!linksContainer) return;
+
+            const links = [
+                { text: 'Ferramenta Secreta', url: 'https://www.google.com' },
+                { text: 'Curso de Marketing', url: 'https://www.udemy.com' },
+                { text: 'Consultoria', url: 'https://www.linkedin.com' }
+            ];
+
+            linksContainer.innerHTML = ''; // Limpa para evitar duplicatas
+            links.forEach(linkInfo => {
+                const linkElement = document.createElement('a');
+                linkElement.className = 'text-gray-600 hover:text-indigo-600 transition cursor-pointer text-sm';
+                linkElement.textContent = linkInfo.text;
+                linkElement.addEventListener('click', (e) => {
+                    e.preventDefault(); 
+                    window.open(linkInfo.url, '_blank');
+                });
+                linksContainer.appendChild(linkElement);
+            });
+        };
 
         // --- EVENT LISTENERS ---
         elements.gerarBtn.addEventListener('click', chamarAPIs);
