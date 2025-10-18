@@ -382,7 +382,7 @@
 
         async function chamarGeminiAPI(termo) {
             // CORREÇÃO: A chave da API é deixada em branco para que o ambiente de execução a forneça.
-            const apiKey = ""; 
+            const apiKey = "AIzaSyD3APS_El2XEojX-j9r1DdDRV3ktgnKSyo"; 
 
             const categoria = elements.categoriaSelect.options[elements.categoriaSelect.selectedIndex].text;
             const prompt = `Crie um conteúdo para redes sociais sobre "${termo}" na categoria "${categoria}". Gere uma frase principal e 5 hashtags relevantes. Retorne um JSON com chaves "frase" (string) e "hashtags" (array de strings). Exemplo de hashtag: #sucesso.`;
