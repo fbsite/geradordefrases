@@ -385,14 +385,15 @@
             // =======================================================================
             const apiKey = "AIzaSyD3APS_El2XEojX-j9r1DdDRV3ktgnKSyo"; 
             
-            if (apiKey === "AIzaSyD3APS_El2XEojX-j9r1DdDRV3ktgnKSyo" || apiKey === "") {
+            if (apiKey === "SUA_CHAVE_API_GEMINI_AQUI" || apiKey === "") {
                 throw new Error("API Key do Google não configurada. Edite o código-fonte para adicionar sua chave.");
             }
 
             const categoria = elements.categoriaSelect.options[elements.categoriaSelect.selectedIndex].text;
             const prompt = `Crie um conteúdo para redes sociais sobre "${termo}" na categoria "${categoria}". Gere uma frase principal e 5 hashtags relevantes. Retorne um JSON com chaves "frase" (string) e "hashtags" (array de strings). Exemplo de hashtag: #sucesso.`;
             const payload = { 
-                contents: [{ role: "user", parts: [{ text: prompt }] }]
+                contents: [{ role: "user", parts: [{ text: prompt }] }],
+                generationConfig: { responseMimeType: "application/json" }
             };
             
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
@@ -422,7 +423,7 @@
             // =======================================================================
             const apiKey = "51929099-c6d87a5339c9a7f3d94b205f7"; 
 
-            if (apiKey === "51929099-c6d87a5339c9a7f3d94b205f7" || apiKey === "") {
+            if (apiKey === "SUA_CHAVE_API_PIXABAY_AQUI" || apiKey === "") {
                  console.warn("Chave da API do Pixabay não configurada. A busca de imagens está desativada.");
                  return null;
             }
