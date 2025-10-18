@@ -8,7 +8,7 @@
     <title>Gerador de Frases com IA para Redes Sociais</title>
     <meta name="description" content="Crie frases, hashtags e imagens incríveis para suas redes sociais com o poder da Inteligência Artificial. Gratuito e fácil de usar.">
     <meta name="keywords" content="gerador de frases, ia, inteligência artificial, gerador de conteúdo, redes sociais, marketing de conteúdo, posts, instagram, seo">
-    <meta name="author" content="Gerador de Frases">
+    <meta name="author" content="Seu Nome ou Empresa">
 
     <!-- Favicon -->
     <link rel="icon" href="https://placehold.co/32x32/4f46e5/ffffff?text=IA" type="image/png">
@@ -71,8 +71,8 @@
         <!-- Espaço para Banner de Publicidade -->
         <div class="w-full max-w-[728px] h-[90px] mx-auto mb-6 bg-gray-200 flex items-center justify-center rounded-lg overflow-hidden">
             <!-- Para trocar o banner, substitua o link 'href' e a URL da imagem 'src' abaixo -->
-            <a href="https://ocodigodosgenios.nicepage.io/Br" target="_blank" rel="noopener noreferrer">
-                <img src="https://i.postimg.cc/NjpjysQL/O-C-digo-dos-G-nios-970-x-200.png" alt="O Código dos Gênios" class="w-full h-full object-cover">
+            <a href="https://seusite.com/seu-link-de-afiliado" target="_blank" rel="noopener noreferrer">
+                <img src="https://placehold.co/728x90/e2e8f0/64748b?text=Seu+Anúncio+Aqui" alt="Espaço para Publicidade" class="w-full h-full object-cover">
             </a>
         </div>
 
@@ -379,7 +379,12 @@
         }
 
         async function chamarGeminiAPI(termo) {
+            // =======================================================================
+            // ATENÇÃO: COLE SUA CHAVE DA API DO GOOGLE GEMINI AQUI
+            // Obtenha uma chave gratuita em: https://aistudio.google.com/app/apikey
+            // =======================================================================
             const apiKey = "AIzaSyD3APS_El2XEojX-j9r1DdDRV3ktgnKSyo"; 
+            
             if (apiKey === "SUA_CHAVE_API_GEMINI_AQUI" || apiKey === "") {
                 throw new Error("API Key do Google não configurada. Edite o código-fonte para adicionar sua chave.");
             }
@@ -387,29 +392,36 @@
             const categoria = elements.categoriaSelect.options[elements.categoriaSelect.selectedIndex].text;
             const prompt = `Crie um conteúdo para redes sociais sobre "${termo}" na categoria "${categoria}". Gere uma frase principal e 5 hashtags relevantes. Retorne um JSON com chaves "frase" (string) e "hashtags" (array de strings). Exemplo de hashtag: #sucesso.`;
             const payload = { 
-                contents: [{ role: "user", parts: [{ text: prompt }] }],
-                generationConfig: { responseMimeType: "application/json" }
+                contents: [{ role: "user", parts: [{ text: prompt }] }]
             };
             
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
             
             const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
             if (!response.ok) {
-                 const errorBody = await response.json().catch(()=>({}));
-                 throw new Error(`Erro na API do Google: ${errorBody?.error?.message || response.statusText}.`);
+                 const errorBody = await response.json().catch(()=>({ error: { message: `Status: ${response.status} ${response.statusText}` }}));
+                 const errorMessage = errorBody?.error?.message || 'Não foi possível obter detalhes do erro.';
+                 throw new Error(`Erro na API do Google: ${errorMessage}. Verifique se sua chave API é válida e se a API está ativada no seu projeto Google Cloud.`);
             }
             
             const result = await response.json();
-            if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0].text) {
+            if (result.candidates && result.candidates[0]?.content?.parts[0]?.text) {
                 const text = result.candidates[0].content.parts[0].text;
-                return JSON.parse(text);
+                const cleanText = text.replace(/```json|```/g, '').trim();
+                return JSON.parse(cleanText);
             } else {
-                throw new Error("Resposta da API do Google inválida.");
+                console.error("Resposta da API do Google com estrutura inesperada:", result);
+                throw new Error("A resposta da API do Google não teve o formato esperado.");
             }
         }
 
         async function chamarPixabayAPI(termo) {
+            // =======================================================================
+            // ATENÇÃO: COLE SUA CHAVE DA API DO PIXABAY AQUI
+            // Obtenha uma chave gratuita em: https://pixabay.com/api/docs/
+            // =======================================================================
             const apiKey = "51929099-c6d87a5339c9a7f3d94b205f7"; 
+
             if (apiKey === "SUA_CHAVE_API_PIXABAY_AQUI" || apiKey === "") {
                  console.warn("Chave da API do Pixabay não configurada. A busca de imagens está desativada.");
                  return null;
