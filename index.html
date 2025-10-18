@@ -72,21 +72,21 @@
         <div class="w-full max-w-[728px] h-[90px] mx-auto mb-6 bg-gray-200 flex items-center justify-center rounded-lg overflow-hidden">
             <!-- Para trocar o banner, substitua o link 'href' e a URL da imagem 'src' abaixo -->
             <a href="https://ocodigodosgenios.nicepage.io/Br" target="_blank" rel="noopener noreferrer">
-                <img src="https://i.postimg.cc/NjpjysQL/O-C-digo-dos-G-nios-970-x-200.png" alt="O Código dos Gênios" class="w-full h-full object-cover">
+                <img src="https://i.postimg.cc/NjpjysQL/O-C-digo-dos-G-nios-970-x-200.png" alt="Espaço para Publicidade" class="w-full h-full object-cover">
             </a>
         </div>
 
         <div class="w-full max-w-4xl mx-auto bg-white rounded-xl shadow-lg">
             <!-- Abas de Navegação -->
             <div class="border-b border-gray-200">
-                <nav class="flex -mb-px" aria-label="Tabs">
-                    <button id="tab-gerador" class="w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm text-indigo-600 border-indigo-500">Gerador</button>
-                    <button id="tab-historico" class="w-1/2 py-4 px-1 text-center border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">Histórico</button>
+                <nav class="flex -mb-px" role="tablist" aria-label="Tabs">
+                    <button id="tab-gerador" role="tab" aria-selected="true" class="w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm text-indigo-600 border-indigo-500">Gerador</button>
+                    <button id="tab-historico" role="tab" aria-selected="false" class="w-1/2 py-4 px-1 text-center border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">Histórico</button>
                 </nav>
             </div>
 
             <!-- Conteúdo da Aba GERADOR -->
-            <div id="content-gerador" class="p-6 md:p-8 space-y-6">
+            <div id="content-gerador" role="tabpanel" class="p-6 md:p-8 space-y-6">
                 <!-- Seção de Inputs -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -110,7 +110,7 @@
 
                 <!-- Botão Gerar -->
                 <button id="gerarBtn" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 active:bg-indigo-800 transition-transform transform hover:scale-105 flex items-center justify-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M11.94.876a1.535 1.535 0 0 1 2.121 2.121l-1.06 1.062a.5.5 0 0 0 .353.854h.448a.5.5 0 0 1 .498.558l-.078.43a.5.5 0 0 0 .44.555h.353a.5.5 0 0 1 .498.557l-.078.43a.5.5 0 0 0 .44.555h.448a.5.5 0 0 1 .498.558l-.078.43a.5.5 0 0 0 .44.555h.353a.5.5 0 0 1 .498.557l-.078.43a.5.5 0 0 0 .44.555h.448a.5.5 0 0 1 .498.558l-.078.43a.5.5 0 0 0 .44.555h.353a.5.5 0 0 1 0 .995h-.353a.5.5 0 0 0-.44.555l.078.43a.5.5 0 0 1-.498.558h-.448a.5.5 0 0 0-.44.555l.078.43a.5.5 0 0 1-.498.557h-.353a.5.5 0 0 0-.44.555l.078.43a.5.5 0 0 1-.498.557h-.448a.5.5 0 0 0-.44.555l.078.43a.5.5 0 0 1-.498.557h-.353a.5.5 0 0 1-.498-.557l.078-.43a.5.5 0 0 0-.44-.555h-.448a.5.5 0 0 1-.498-.558l.078-.43a.5.5 0 0 0-.44-.555h-.353a.5.5 0 0 1-.498-.557l.078-.43a.5.5 0 0 0-.44-.555h-.448a.5.5 0 0 1-.498-.558l.078-.43a.5.5 0 0 0-.44-.555h-.353a.5.5 0 0 1 0-.995h.353a.5.5 0 0 0 .44-.555l-.078-.43a.5.5 0 0 1 .498-.557h.448a.5.5 0 0 0 .44-.555l-.078-.43a.5.5 0 0 1 .498-.558h.353a.5.5 0 0 0 .44-.555l-.078-.43a.5.5 0 0 1 .498-.557h.448a.5.5 0 0 0 .44-.555l-.078-.43a.5.5 0 0 1 .498-.557h.353a.5.5 0 0 0 .354-.854zm-9.88 9.88a1.535 1.535 0 0 1-2.121-2.121l1.06-1.062a.5.5 0 0 0-.353-.854H.25a.5.5 0 0 1-.498-.558l.078-.43a.5.5 0 0 0-.44-.555H.032a.5.5 0 0 1-.498-.557l.078-.43a.5.5 0 0 0-.44-.555H.25a.5.5 0 0 1 0-.995h-.078a.5.5 0 0 0-.44.555l-.078-.43a.5.5 0 0 1 .498-.557h.448a.5.5 0 0 0 .44-.555l-.078-.43a.5.5 0 0 1 .498-.558h.353a.5.5 0 0 0 .354-.854l-1.06-1.062a1.535 1.535 0 0 1 2.121 2.121L2.12 11.88a.5.5 0 0 0 .353.854h.448a.5.5 0 0 1 .498.558l-.078.43a.5.5 0 0 0 .44.555h.353a.5.5 0 0 1 .498.557l-.078.43a.5.5 0 0 0 .44.555h.078a.5.5 0 0 1 0 .995h-.078a.5.5 0 0 0-.44.555l.078.43a.5.5 0 0 1-.498.558h-.448a.5.5 0 0 0-.44.555l.078.43a.5.5 0 0 1-.498.557h-.353a.5.5 0 0 0-.354.854zM8 5a.5.5 0 0 1 .5.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2A.5.5 0 0 1 8 5"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m-5-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m5-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m-2.121-7.121a3.5 3.5 0 0 0-4.95-4.95L.293 4.293a1 1 0 0 0 1.414 1.414zM4.293.293 8 4a3.5 3.5 0 0 0 4.95 4.95l4.293-4.293a1 1 0 0 0-1.414-1.414z"/></svg>
                     Gerar Frase
                 </button>
                 
@@ -229,7 +229,7 @@
             </div>
 
             <!-- Conteúdo da Aba HISTÓRICO -->
-            <div id="content-historico" class="p-6 md:p-8 hidden">
+            <div id="content-historico" role="tabpanel" class="p-6 md:p-8 hidden">
                  <div class="flex justify-between items-center mb-4">
                     <h2 class="text-2xl font-bold text-gray-800">Seu Histórico</h2>
                     <button id="abrirModalLimpar" class="bg-red-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-600 text-sm transition">Limpar Tudo</button>
@@ -254,7 +254,7 @@
     </div>
     
     <footer class="bg-white text-center py-4 mt-8 shadow-inner">
-        <!-- Links Externos Ocultos -->
+        <!-- Links Externos -->
         <div class="mb-4">
             <p class="text-sm font-semibold text-gray-700">Links Úteis:</p>
             <div id="footer-links" class="flex justify-center gap-x-6 gap-y-2 flex-wrap px-4">
@@ -352,6 +352,7 @@
             mostrarLoading(true);
 
             try {
+                // Chamadas em paralelo para otimizar o tempo
                 const [dadosFrase, imageUrl] = await Promise.all([
                     chamarGeminiAPI(termo),
                     chamarPixabayAPI(termo)
@@ -363,6 +364,7 @@
 
                 exibirResultados(dadosFrase.frase, dadosFrase.hashtags || [], null, imageUrl);
                 
+                // Salva no histórico após ter certeza que a geração foi bem sucedida
                 const visualSettings = {
                     corFundo: elements.corFundoInput.value, corTexto: elements.corTextoInput.value, fonteTexto: elements.fonteTextoSelect.value,
                     formato: activeFormat, backgroundType: backgroundType, bgImageSrc: backgroundType === 'image' ? bgImageSrc : null,
@@ -379,38 +381,47 @@
         }
 
         async function chamarGeminiAPI(termo) {
-            const apiKey = "AIzaSyD3APS_El2XEojX-j9r1DdDRV3ktgnKSyo"; 
-            if (apiKey === "SUA_CHAVE_API_GEMINI_AQUI" || apiKey === "") {
-                throw new Error("API Key do Google não configurada. Edite o código-fonte para adicionar sua chave.");
-            }
+            // CORREÇÃO: A chave da API é deixada em branco para que o ambiente de execução a forneça.
+            const apiKey = ""; 
 
             const categoria = elements.categoriaSelect.options[elements.categoriaSelect.selectedIndex].text;
             const prompt = `Crie um conteúdo para redes sociais sobre "${termo}" na categoria "${categoria}". Gere uma frase principal e 5 hashtags relevantes. Retorne um JSON com chaves "frase" (string) e "hashtags" (array de strings). Exemplo de hashtag: #sucesso.`;
+            
             const payload = { 
                 contents: [{ role: "user", parts: [{ text: prompt }] }],
                 generationConfig: { responseMimeType: "application/json" }
             };
             
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+            // CORREÇÃO: Utilizando o modelo gemini-2.5-flash-preview-09-2025 que é otimizado para tarefas rápidas.
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
             
             const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            
             if (!response.ok) {
-                 const errorBody = await response.json().catch(()=>({}));
-                 throw new Error(`Erro na API do Google: ${errorBody?.error?.message || response.statusText}.`);
+                 const errorBody = await response.json().catch(()=>({ error: { message: `Status: ${response.status} ${response.statusText}` }}));
+                 const errorMessage = errorBody?.error?.message || 'Não foi possível obter detalhes do erro.';
+                 throw new Error(`Erro na API do Google: ${errorMessage}. Verifique se a API está ativada no seu projeto Google Cloud.`);
             }
             
             const result = await response.json();
-            if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0].text) {
-                const text = result.candidates[0].content.parts[0].text;
+            const candidate = result.candidates?.[0];
+
+            if (candidate?.content?.parts?.[0]?.text) {
+                const text = candidate.content.parts[0].text;
+                // O texto já vem como JSON, apenas precisamos parsear.
                 return JSON.parse(text);
             } else {
-                throw new Error("Resposta da API do Google inválida.");
+                console.error("Resposta da API do Google com estrutura inesperada:", result);
+                throw new Error("A resposta da API do Google não teve o formato esperado.");
             }
         }
 
         async function chamarPixabayAPI(termo) {
+            // Deixe a chave do Pixabay aqui se você tiver uma. 
+            // Se não, o código irá ignorar a busca de imagem graciosamente.
             const apiKey = "51929099-c6d87a5339c9a7f3d94b205f7"; 
-            if (apiKey === "SUA_CHAVE_API_PIXABAY_AQUI" || apiKey === "") {
+
+            if (apiKey === "SUA_CHAVE_API_PIXABAY_AQUI" || !apiKey) {
                  console.warn("Chave da API do Pixabay não configurada. A busca de imagens está desativada.");
                  return null;
             }
@@ -472,8 +483,12 @@
                 };
                 img.src = imageUrl;
             } else {
+                 // MELHORIA: Se não houver imagem, gera um gradiente aleatório como fundo.
+                const randomColor1 = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+                const randomColor2 = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+                elements.corFundoInput.value = randomColor1; // Apenas para referência, o gradiente será usado.
                 setBgType('color'); 
-                atualizarCanvas();
+                atualizarCanvas([randomColor1, randomColor2]);
             }
             
             elements.resultadoDiv.classList.remove('hidden');
@@ -517,7 +532,7 @@
         }
 
         // --- LÓGICA DO CANVAS ---
-        function atualizarCanvas() {
+        function atualizarCanvas(gradientColors = null) {
             const frase = elements.fraseGeradaP.textContent;
             if (!frase) return;
             const [ratioW, ratioH] = activeFormat.split(':').map(Number);
@@ -539,7 +554,14 @@
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.globalAlpha = 1.0;
             } else {
-                ctx.fillStyle = elements.corFundoInput.value;
+                 if (gradientColors) {
+                    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                    gradient.addColorStop(0, gradientColors[0]);
+                    gradient.addColorStop(1, gradientColors[1]);
+                    ctx.fillStyle = gradient;
+                } else {
+                    ctx.fillStyle = elements.corFundoInput.value;
+                }
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
             
@@ -651,10 +673,21 @@
             const isGerador = aba === 'gerador';
             elements.contentGerador.classList.toggle('hidden', !isGerador);
             elements.contentHistorico.classList.toggle('hidden', isGerador);
+            // Gerenciamento de classes
             elements.tabGerador.classList.toggle('text-indigo-600', isGerador);
             elements.tabGerador.classList.toggle('border-indigo-500', isGerador);
+            elements.tabGerador.classList.toggle('text-gray-500', !isGerador);
+            elements.tabGerador.classList.toggle('border-transparent', !isGerador);
+            
             elements.tabHistorico.classList.toggle('text-indigo-600', !isGerador);
             elements.tabHistorico.classList.toggle('border-indigo-500', !isGerador);
+            elements.tabHistorico.classList.toggle('text-gray-500', isGerador);
+            elements.tabHistorico.classList.toggle('border-transparent', isGerador);
+            
+            // MELHORIA: Acessibilidade
+            elements.tabGerador.setAttribute('aria-selected', isGerador);
+            elements.tabHistorico.setAttribute('aria-selected', !isGerador);
+
             if (!isGerador) renderizarHistorico();
         };
 
@@ -673,7 +706,7 @@
         function copiarTexto() {
             const textoParaCopiar = `${elements.fraseGeradaP.textContent}\n\n${elements.hashtagsGeradasP.textContent}`;
             const feedbackCopiado = () => {
-                const originalText = elements.copiarBtn.textContent;
+                const originalText = "Copiar";
                 elements.copiarBtn.textContent = 'Copiado!';
                 elements.copiarBtn.classList.add('bg-green-500', 'hover:bg-green-500');
                 setTimeout(() => {
@@ -681,23 +714,18 @@
                     elements.copiarBtn.classList.remove('bg-green-500', 'hover:bg-green-500');
                 }, 2000);
             };
-            const copiarFallback = () => {
-                const textArea = document.createElement("textarea");
-                textArea.value = textoParaCopiar;
-                textArea.style.position = "fixed"; textArea.style.top = "-9999px"; textArea.style.left = "-9999px";
-                document.body.appendChild(textArea);
-                textArea.focus(); textArea.select();
-                try {
-                    document.execCommand('copy');
-                    feedbackCopiado();
-                } catch (err) { alert('Não foi possível copiar o texto.'); }
-                document.body.removeChild(textArea);
-            }
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(textoParaCopiar).then(feedbackCopiado).catch(copiarFallback);
-            } else {
-                copiarFallback();
-            }
+            
+            // Usando o método de fallback document.execCommand para maior compatibilidade.
+            const textArea = document.createElement("textarea");
+            textArea.value = textoParaCopiar;
+            textArea.style.position = "fixed"; textArea.style.top = "-9999px"; textArea.style.left = "-9999px";
+            document.body.appendChild(textArea);
+            textArea.focus(); textArea.select();
+            try {
+                document.execCommand('copy');
+                feedbackCopiado();
+            } catch (err) { alert('Não foi possível copiar o texto.'); }
+            document.body.removeChild(textArea);
         }
         
         // --- RENDERIZAR LINKS DO RODAPÉ ---
@@ -716,10 +744,9 @@
                 const linkElement = document.createElement('a');
                 linkElement.className = 'text-gray-600 hover:text-indigo-600 transition cursor-pointer text-sm';
                 linkElement.textContent = linkInfo.text;
-                linkElement.addEventListener('click', (e) => {
-                    e.preventDefault(); 
-                    window.open(linkInfo.url, '_blank');
-                });
+                linkElement.href = linkInfo.url;
+                linkElement.target = '_blank';
+                linkElement.rel = 'noopener noreferrer';
                 linksContainer.appendChild(linkElement);
             });
         };
@@ -727,7 +754,7 @@
         // --- EVENT LISTENERS ---
         elements.gerarBtn.addEventListener('click', chamarAPIs);
         elements.copiarBtn.addEventListener('click', copiarTexto);
-        [elements.corFundoInput, elements.corTextoInput, elements.fonteTextoSelect, elements.overlayOpacityInput].forEach(el => el.addEventListener('input', atualizarCanvas));
+        [elements.corFundoInput, elements.corTextoInput, elements.fonteTextoSelect, elements.overlayOpacityInput].forEach(el => el.addEventListener('input', () => atualizarCanvas()));
         elements.downloadBtn.addEventListener('click', baixarImagem);
         elements.logoUploadInput.addEventListener('change', (e) => handleFileUpload(e, true));
         elements.bgUploadInput.addEventListener('change', (e) => handleFileUpload(e, false));
