@@ -12,15 +12,17 @@ export default async function handler(req, res) {
     const apiKey = process.env.GOOGLE_API_KEY;
 
     if (!apiKey) {
-        return res.status(500).json({ error: 'Variável GOOGLE_API_KEY não encontrada na Vercel.' });
+        return res.status(500).json({ error: 'Variável GOOGLE_API_KEY não configurada na Vercel.' });
     }
 
-    // Usando gemini-1.5-flash que é a versão estável e gratuita mais rápida para API pública
-    const model = "gemini-1.5-flash";
-    const prompt = `Gere uma frase curta e impactante sobre "${termo}" para a categoria "${categoria}". Retorne APENAS um JSON puro no formato: {"frase": "texto aqui", "hashtags": ["#tag1", "#tag2"]}`;
+    // Ajustado para o ID de modelo mais estável do Google
+    const modelId = "gemini-1.5-flash-latest";
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:generateContent?key=${apiKey}`;
+
+    const prompt = `Gere uma frase curta e impactante sobre "${termo}" para a categoria "${categoria}". Retorne obrigatoriamente APENAS um JSON puro no formato: {"frase": "texto aqui", "hashtags": ["#tag1", "#tag2"]}`;
 
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+        const response = await fetch(apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -34,24 +36,28 @@ export default async function handler(req, res) {
 
         const data = await response.json();
         
+        // Se o Google retornar erro (como o 404 anterior), repassamos o erro detalhado
         if (data.error) {
-            console.error("Erro na API do Google:", data.error);
-            return res.status(500).json({ error: data.error.message });
+            console.error("Erro reportado pelo Google:", data.error);
+            return res.status(data.error.code || 500).json({ 
+                error: "IA Temporariamente indisponível", 
+                details: data.error.message 
+            });
         }
 
-        let textResponse = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        const textResponse = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
         if (!textResponse) {
-            throw new Error('IA retornou uma resposta vazia.');
+            throw new Error('A IA não gerou conteúdo para estes termos.');
         }
 
-        // Limpeza de segurança: remove blocos de código markdown se a IA os incluir por engano
+        // Limpeza de blocos de código markdown que a IA às vezes insere
         const cleanJson = textResponse.replace(/```json/g, '').replace(/```/g, '').trim();
         
         res.status(200).json(JSON.parse(cleanJson));
 
     } catch (error) {
-        console.error("Erro interno no Proxy:", error);
-        res.status(500).json({ error: 'Erro ao processar a requisição.', details: error.message });
+        console.error("Erro Crítico no Servidor:", error);
+        res.status(500).json({ error: 'Erro ao processar a frase.', details: error.message });
     }
 }
