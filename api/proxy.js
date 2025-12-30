@@ -22,8 +22,8 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'Chave de API em falta na Vercel.' });
     }
 
-    // Modelo estável e rápido
-    const model = "gemini-1.5-flash"; 
+    // Modelo atualizado para a versão 2.5 Flash Preview
+    const model = "gemini-2.5-flash-preview-09-2025"; 
     
     const prompt = `Gere uma frase curta, inspiradora e original sobre "${termo}" para a categoria "${categoria}". Retorne obrigatoriamente APENAS um JSON puro no formato: {"frase": "texto da frase", "hashtags": ["#tag1", "#tag2"]}`;
 
