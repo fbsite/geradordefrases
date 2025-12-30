@@ -3,12 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>geradordefrases.com | Criador de Posts Profissionais</title>
+    <meta name="description" content="Crie frases, hashtags e imagens incríveis para suas redes sociais de forma profissional.">
+
     <link rel="icon" type="image/x-icon" href="https://i.supaimg.com/a0e509ac-e6e9-47b5-a818-08a28f72f620.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Playfair+Display:wght@700;900&family=Roboto+Mono&family=Dancing+Script:wght@700&family=Montserrat:wght@800&family=Pacifico&family=Oswald:wght@700&family=Caveat:wght@700&family=Lora:italic,wght@1,700&display=swap" rel="stylesheet">
+    
+    <!-- FONTES CORRIGIDAS: Carregando pesos 400 e 700 para todas garantirem funcionamento no Canvas -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Dancing+Script:wght@400;700&family=Inter:wght@400;700;900&family=Lora:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;700;900&family=Oswald:wght@400;700&family=Pacifico&family=Playfair+Display:wght@400;700;900&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
         body { font-family: 'Inter', sans-serif; }
+        
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         .loader { border: 4px solid #f3f3f3; border-top: 4px solid #4f46e5; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
@@ -19,9 +27,12 @@
         #historicoContainer::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .btn-instagram { background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); }
         .text-gradient { background: linear-gradient(to right, #4f46e5, #9333ea); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .mp-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; padding: 1rem; }
+        .mp-modal.active { display: flex; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+    
     <header class="bg-white border-b border-slate-200">
         <div class="container mx-auto px-6 py-8 text-center">
             <div class="flex flex-col items-center">
@@ -46,18 +57,18 @@
             <div class="border-b border-slate-100 bg-slate-50/50">
                 <nav class="flex" role="tablist">
                     <button id="tab-gerador" class="flex-1 py-5 text-center border-b-2 font-bold text-sm text-indigo-600 border-indigo-600 transition uppercase">Criar Post</button>
-                    <button id="tab-historico" class="flex-1 py-5 text-center border-b-2 border-transparent font-medium text-sm text-slate-500 transition uppercase">Histórico</button>
+                    <button id="tab-historico" class="flex-1 py-5 text-center border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-indigo-600 transition uppercase">Histórico</button>
                 </nav>
             </div>
 
             <div id="content-gerador" class="p-6 md:p-8 space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Palavra-chave</label>
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Palavra-chave</label>
                         <input type="text" id="termo" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Ex: disciplina, café, marketing...">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Categoria</label>
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Categoria</label>
                         <select id="categoria" class="w-full px-4 py-3 border border-slate-200 rounded-xl bg-white outline-none focus:ring-2 focus:ring-indigo-500">
                              <option value="motivacional">Motivacional</option>
                              <option value="romantica">Romântica</option>
@@ -88,16 +99,17 @@
                             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Legenda Sugerida</h3>
                             <button id="copiarBtn" class="bg-white px-4 py-1.5 rounded-full border border-slate-200 text-indigo-600 text-[10px] font-black hover:bg-indigo-600 hover:text-white transition-all uppercase">Copiar</button>
                         </div>
-                        <p id="fraseGerada" class="text-lg text-slate-800 font-medium italic"></p>
+                        <p id="fraseGerada" class="text-lg text-slate-800 font-medium italic leading-relaxed"></p>
                         <p id="hashtagsGeradas" class="text-indigo-600 font-bold text-sm"></p>
                     </div>
 
                     <div class="flex flex-col items-center gap-4 text-center">
                         <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Escolha o Formato</span>
-                        <div class="flex flex-wrap justify-center p-1 bg-slate-100 rounded-full gap-1">
-                            <button data-format="1:1" class="format-btn px-6 py-2 bg-white text-indigo-600 text-xs font-bold rounded-full shadow-sm">FEED (1:1)</button>
-                            <button data-format="9:16" class="format-btn px-6 py-2 text-slate-500 text-xs font-bold rounded-full">STORY (9:16)</button>
-                            <button data-format="16:9" class="format-btn px-6 py-2 text-slate-500 text-xs font-bold rounded-full">WIDE (16:9)</button>
+                        <!-- CORREÇÃO: Grid de 3 colunas para garantir lado a lado -->
+                        <div class="grid grid-cols-3 gap-2 w-full p-1 bg-slate-100 rounded-2xl">
+                            <button data-format="1:1" class="format-btn py-2.5 bg-white text-indigo-600 text-[10px] md:text-xs font-black rounded-xl shadow-sm uppercase">FEED</button>
+                            <button data-format="9:16" class="format-btn py-2.5 text-slate-500 text-[10px] md:text-xs font-black rounded-xl hover:bg-white/50 uppercase">STORY</button>
+                            <button data-format="16:9" class="format-btn py-2.5 text-slate-500 text-[10px] md:text-xs font-black rounded-xl hover:bg-white/50 uppercase">WIDE</button>
                         </div>
                     </div>
 
@@ -107,9 +119,9 @@
 
                     <div class="bg-white p-6 rounded-2xl border border-slate-200 space-y-6 shadow-sm">
                         <div class="flex border-b border-slate-200">
-                            <button id="tab-custom-fundo" class="custom-tab-btn flex-1 py-3 text-center border-b-2 font-bold text-xs text-indigo-600 border-indigo-600 transition uppercase">Fundo</button>
-                            <button id="tab-custom-texto" class="custom-tab-btn flex-1 py-3 text-center border-b-2 border-transparent font-medium text-xs text-slate-500 hover:text-indigo-600 transition uppercase">Texto</button>
-                            <button id="tab-custom-logo" class="custom-tab-btn flex-1 py-3 text-center border-b-2 border-transparent font-medium text-xs text-slate-500 hover:text-indigo-600 transition uppercase">Logo</button>
+                            <button id="tab-custom-fundo" class="custom-tab-btn flex-1 py-3 text-center border-b-2 font-bold text-xs text-indigo-600 border-indigo-600 transition uppercase tracking-widest">Fundo</button>
+                            <button id="tab-custom-texto" class="custom-tab-btn flex-1 py-3 text-center border-b-2 border-transparent font-medium text-xs text-slate-500 hover:text-indigo-600 transition uppercase tracking-widest">Texto</button>
+                            <button id="tab-custom-logo" class="custom-tab-btn flex-1 py-3 text-center border-b-2 border-transparent font-medium text-xs text-slate-500 hover:text-indigo-600 transition uppercase tracking-widest">Logo</button>
                         </div>
 
                         <div id="content-custom-fundo" class="space-y-4 custom-tab-content">
@@ -122,7 +134,7 @@
                             </div>
                             <div id="bg-image-controls" class="hidden space-y-4">
                                 <label for="bgUpload" class="flex items-center justify-center w-full h-24 border-2 border-slate-200 border-dashed rounded-lg cursor-pointer hover:border-indigo-600">
-                                    <span class="text-xs font-bold text-slate-400">CARREGAR IMAGEM</span>
+                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Upload Imagem</span>
                                     <input type="file" id="bgUpload" class="hidden" accept="image/png, image/jpeg">
                                 </label>
                                 <input type="range" id="overlayOpacity" min="0" max="1" step="0.05" value="0.5" class="w-full h-2 bg-slate-200 rounded-full appearance-none cursor-pointer">
@@ -131,7 +143,7 @@
 
                         <div id="content-custom-texto" class="hidden space-y-4 custom-tab-content">
                             <input type="color" id="corTexto" value="#FFFFFF" class="w-full h-10 p-1 border border-slate-200 rounded-lg cursor-pointer">
-                            <select id="fonteTexto" class="w-full px-4 py-2 border border-slate-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-indigo-500 font-bold uppercase text-xs">
+                            <select id="fonteTexto" class="w-full px-4 py-2 border border-slate-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-indigo-500 font-bold uppercase text-xs tracking-widest">
                                 <optgroup label="Modernas">
                                     <option value="Inter" selected>Modern (Inter)</option>
                                     <option value="Montserrat">Impacto (Montserrat)</option>
@@ -152,9 +164,9 @@
                         
                         <div id="content-custom-logo" class="hidden space-y-4 custom-tab-content">
                              <div class="flex items-center gap-2">
-                                <label for="logoUpload" class="flex-1 cursor-pointer bg-slate-900 text-white text-center py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-indigo-600 transition">Enviar Logo PNG</label>
+                                <label for="logoUpload" class="flex-1 cursor-pointer bg-slate-900 text-white text-center py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-indigo-600 transition shadow-md">Carregar Logo PNG</label>
                                 <input type="file" id="logoUpload" class="hidden" accept="image/png">
-                                <button id="removerLogoBtn" class="bg-slate-100 p-3 rounded-xl text-slate-400 hover:text-red-500"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm-2.5 1a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m3 0a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/></svg></button>
+                                <button id="removerLogoBtn" class="bg-slate-100 p-3 rounded-xl text-slate-400 hover:text-red-500 transition shadow-sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm-2.5 1a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m3 0a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/></svg></button>
                              </div>
                         </div>
                     </div>
@@ -162,12 +174,12 @@
                     <div class="pt-8 border-t border-slate-100 text-center">
                         <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6">COMPARTILHE SUA FRASE</h3>
                         <div class="grid grid-cols-2 md:grid-cols-6 gap-3">
-                            <a id="whatsappShareBtn" target="_blank" class="bg-[#25D366] text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase">WhatsApp</a>
-                            <button id="instagramBtn" class="btn-instagram text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase">Instagram</button>
-                            <a id="twitterShareBtn" target="_blank" class="bg-black text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase">Twitter</a>
-                            <a id="facebookShareBtn" target="_blank" class="bg-[#1877F2] text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase">Facebook</a>
-                            <a id="pinterestShareBtn" target="_blank" class="bg-[#E60023] text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase">Pinterest</a>
-                            <button id="downloadBtn" class="bg-indigo-600 text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase">Salvar</button>
+                            <a id="whatsappShareBtn" target="_blank" class="bg-[#25D366] text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase tracking-widest">WhatsApp</a>
+                            <button id="instagramBtn" class="btn-instagram text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase tracking-widest">Instagram</button>
+                            <a id="twitterShareBtn" target="_blank" class="bg-black text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase tracking-widest">Twitter</a>
+                            <a id="facebookShareBtn" target="_blank" class="bg-[#1877F2] text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase tracking-widest">Facebook</a>
+                            <a id="pinterestShareBtn" target="_blank" class="bg-[#E60023] text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase tracking-widest">Pinterest</a>
+                            <button id="downloadBtn" class="bg-indigo-600 text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase tracking-widest">Salvar</button>
                         </div>
                     </div>
                 </div>
@@ -175,7 +187,7 @@
 
             <div id="content-historico" class="hidden p-6 md:p-8 space-y-6">
                 <div id="historicoContainer" class="space-y-4 max-h-[600px] overflow-y-auto pr-2">
-                    <p class="text-center text-slate-300 py-10 uppercase font-black text-xs tracking-widest italic">Aguardando sua primeira criação...</p>
+                    <p class="text-center text-slate-400 py-10 font-bold uppercase text-[10px] tracking-widest">Aguardando sua primeira criação...</p>
                 </div>
             </div>
         </div>
@@ -183,19 +195,19 @@
         <!-- Banner Inferior -->
         <div class="w-full max-w-[728px] h-[90px] mx-auto mt-10 bg-slate-200 flex items-center justify-center rounded-2xl overflow-hidden shadow-sm border border-slate-100">
             <a href="https://comparamaq.com.br" target="_blank">
-                <img src="https://i.supaimg.com/60bdb364-1825-450c-9087-e31171bfcf11.png" alt="Banner" class="w-full h-full object-cover">
+                <img src="https://i.supaimg.com/60bdb364-1825-450c-9087-e31171bfcf11.png" alt="Compara Maq" class="w-full h-full object-cover">
             </a>
         </div>
     </main>
 
-    <footer class="bg-white border-t border-slate-100 py-12 text-center text-xs text-slate-400 font-black uppercase">
+    <footer class="bg-white border-t border-slate-100 py-12 text-center text-xs text-slate-400 font-black uppercase tracking-widest">
         <div class="container mx-auto px-4">
             <div class="flex flex-wrap justify-center items-center gap-x-8 gap-y-4 mb-8">
                 <a href="https://ativar-bonus-vivo.shop" target="_blank" class="hover:text-indigo-600 transition">10GB Vivo Easy</a>
                 <a href="https://conectar-blue.vercel.app" target="_blank" class="hover:text-indigo-600 transition">1Ano GRÁTIS Conectar</a>
                 <a href="https://hubsmart.vercel.app" target="_blank" class="hover:text-indigo-600 transition">Agregador IA</a>
             </div>
-            <p class="text-slate-300 tracking-[0.3em] font-bold">&copy; <span id="ano"></span> geradordefrases.com</p>
+            <p class="text-slate-300 tracking-[0.3em]">&copy; <span id="ano"></span> geradordefrases.com</p>
         </div>
     </footer>
 
@@ -210,9 +222,8 @@
             logoU: document.getElementById('logoUpload')
         };
         const ctx = els.canvas.getContext('2d');
-        let activeFormat = '1:1', backgroundType = 'color', uploadedImage = null, uploadedLogo = null;
+        let activeFormat = '1:1', backgroundType = 'color', currentImage = null, uploadedImage = null, uploadedLogo = null;
 
-        // --- SISTEMA DE ABAS ---
         function switchTab(tab) {
             const isG = tab === 'gerador';
             document.getElementById('content-gerador').classList.toggle('hidden', !isG);
@@ -224,8 +235,7 @@
         document.getElementById('tab-gerador').onclick = () => switchTab('gerador');
         document.getElementById('tab-historico').onclick = () => switchTab('historico');
 
-        // --- PERSONALIZAÇÃO ---
-        function setBg(type) {
+        function setBgType(type) {
             backgroundType = type;
             document.getElementById('bg-color-controls').classList.toggle('hidden', type !== 'color');
             document.getElementById('bg-image-controls').classList.toggle('hidden', type !== 'image');
@@ -233,14 +243,14 @@
             document.getElementById('bg-type-image').className = `bg-type-btn flex-1 py-2 px-3 rounded-lg text-xs font-bold uppercase transition ${type === 'image' ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 text-slate-500'}`;
             desenharCanvas();
         }
-        document.getElementById('bg-type-color').onclick = () => setBg('color');
-        document.getElementById('bg-type-image').onclick = () => setBg('image');
+        document.getElementById('bg-type-color').onclick = () => setBgType('color');
+        document.getElementById('bg-type-image').onclick = () => setBgType('image');
 
         function handleFile(e, isLogo) {
             const reader = new FileReader();
             reader.onload = (ev) => {
                 const img = new Image();
-                img.onload = () => { if (isLogo) uploadedLogo = img; else { uploadedImage = img; setBg('image'); } desenharCanvas(); };
+                img.onload = () => { if (isLogo) uploadedLogo = img; else { uploadedImage = img; currentImage = null; setBgType('image'); } desenharCanvas(); };
                 img.src = ev.target.result;
             };
             reader.readAsDataURL(e.target.files[0]);
@@ -250,7 +260,6 @@
         document.getElementById('removerLogoBtn').onclick = () => { uploadedLogo = null; desenharCanvas(); };
         [els.corF, els.op, els.corT, els.font].forEach(el => el.oninput = desenharCanvas);
 
-        // --- GERADOR ---
         async function gerar() {
             const t = els.termo.value.trim(); if (!t) return;
             els.loading.classList.remove('hidden'); els.res.classList.add('hidden'); els.erro.classList.add('hidden'); els.btn.disabled = true;
@@ -260,32 +269,36 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ termo: t, categoria: els.cat.value })
                 });
-                if (!response.ok) throw new Error("Erro na conexão com a API. Verifique se o site está na Vercel.");
                 const res = await response.json();
+                if (res.error) throw new Error(res.error);
                 els.frase.textContent = `"${res.frase}"`; els.tags.textContent = res.hashtags.join(' ');
-                setBg('color'); els.res.classList.remove('hidden'); desenharCanvas();
+                currentImage = null; setBgType('color'); els.res.classList.remove('hidden'); desenharCanvas();
                 saveHist({ ...res, ts: Date.now() }); updateSocial();
-            } catch (err) {
-                els.erro.textContent = "Erro: Para gerar frases, este site precisa estar publicado na Vercel com a chave de API configurada.";
-                els.erro.classList.remove('hidden');
-            } finally { els.loading.classList.add('hidden'); els.btn.disabled = false; }
+            } catch (err) { els.erro.textContent = err.message; els.erro.classList.remove('hidden'); }
+            finally { els.loading.classList.add('hidden'); els.btn.disabled = false; }
         }
 
         function desenharCanvas() {
             const [wR, hR] = activeFormat.split(':').map(Number);
             els.canvas.width = 1080; els.canvas.height = (1080 * hR) / wR;
-            if (backgroundType === 'image' && uploadedImage) {
-                const sc = Math.max(els.canvas.width / uploadedImage.width, els.canvas.height / uploadedImage.height);
-                ctx.drawImage(uploadedImage, (els.canvas.width/2)-(uploadedImage.width*sc/2), (els.canvas.height/2)-(uploadedImage.height*sc/2), uploadedImage.width*sc, uploadedImage.height*sc);
+            if (backgroundType === 'image' && (uploadedImage || currentImage)) {
+                const img = uploadedImage || currentImage;
+                const sc = Math.max(els.canvas.width / img.width, els.canvas.height / img.height);
+                ctx.drawImage(img, (els.canvas.width/2)-(img.width*sc/2), (els.canvas.height/2)-(img.height*sc/2), img.width*sc, img.height*sc);
                 ctx.fillStyle = `rgba(0,0,0,${els.op.value})`; ctx.fillRect(0,0,els.canvas.width,els.canvas.height);
             } else {
                 ctx.fillStyle = els.corF.value; ctx.fillRect(0,0,els.canvas.width,els.canvas.height);
             }
             ctx.fillStyle = els.corT.value; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-            let fS = activeFormat === '9:16' ? 75 : 65; ctx.font = `bold ${fS}px '${els.font.value}'`;
+            let fS = activeFormat === '9:16' ? 75 : 65; 
+            // CORREÇÃO: Usar o valor da fonte selecionada
+            ctx.font = `bold ${fS}px '${els.font.value}'`;
             wrap(ctx, els.frase.textContent, els.canvas.width/2, els.canvas.height/2, els.canvas.width*0.8, fS*1.3);
+            
+            // Marca d'água fixa
             ctx.font = "bold 28px Inter"; ctx.fillStyle = "rgba(255,255,255,0.4)";
             ctx.fillText("geradordefrases.com", els.canvas.width/2, els.canvas.height - 40);
+
             if (uploadedLogo) {
                 const hL = els.canvas.height * 0.12, wL = (uploadedLogo.width * hL) / uploadedLogo.height;
                 ctx.drawImage(uploadedLogo, (els.canvas.width-wL)/2, els.canvas.height-hL-85, wL, hL);
@@ -303,7 +316,6 @@
             lines.forEach(line => { c.fillText(line, x, sY); sY += lH; });
         }
 
-        // --- HISTÓRICO ---
         function saveHist(o) {
             let h = JSON.parse(localStorage.getItem('hist_vFinal') || '[]');
             h.unshift(o); localStorage.setItem('hist_vFinal', JSON.stringify(h.slice(0, 20)));
@@ -344,7 +356,7 @@
 
         document.getElementById('copiarBtn').onclick = () => {
             navigator.clipboard.writeText(els.frase.textContent + "\n\n" + els.tags.textContent);
-            els.copiarBtn.textContent = "Copiado!"; setTimeout(() => els.copiarBtn.textContent = "COPIAR", 2000);
+            els.copiarBtn.textContent = "Copiado!"; setTimeout(() => els.copiarBtn.textContent = "Copiar", 2000);
         };
 
         document.getElementById('downloadBtn').onclick = () => {
@@ -354,8 +366,10 @@
         document.querySelectorAll('.format-btn').forEach(b => {
             b.onclick = (e) => {
                 activeFormat = e.target.dataset.format;
-                document.querySelectorAll('.format-btn').forEach(x => x.className = 'format-btn px-6 py-2 text-slate-500 text-xs font-bold rounded-full transition');
-                e.target.className = 'format-btn px-6 py-2 bg-white text-indigo-600 text-xs font-bold rounded-full shadow-sm transition';
+                document.querySelectorAll('.format-btn').forEach(x => { x.className = 'format-btn px-6 py-2.5 bg-white text-indigo-600 text-xs font-bold rounded-full shadow-sm' === x.className ? 'format-btn px-6 py-2.5 text-slate-500 text-xs font-bold rounded-full' : 'format-btn px-6 py-2.5 text-slate-500 text-xs font-bold rounded-full' });
+                // Reset classes for all then apply active
+                document.querySelectorAll('.format-btn').forEach(x => x.className = 'format-btn px-6 py-2 text-slate-500 text-xs font-bold rounded-full hover:bg-white/50 transition-all uppercase');
+                e.target.className = 'format-btn px-6 py-2 bg-white text-indigo-600 text-xs font-bold rounded-full shadow-sm transition-all uppercase';
                 desenharCanvas();
             };
         });
