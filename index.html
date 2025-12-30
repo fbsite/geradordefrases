@@ -3,20 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>geradordefrases.com | Criador de Posts Profissionais</title>
-    <meta name="description" content="Crie frases, hashtags e imagens incríveis para suas redes sociais de forma profissional.">
-
     <link rel="icon" type="image/x-icon" href="https://i.supaimg.com/a0e509ac-e6e9-47b5-a818-08a28f72f620.png">
-
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- FONTES CORRIGIDAS: Carregando pesos 400 e 700 para todas garantirem funcionamento no Canvas -->
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Dancing+Script:wght@400;700&family=Inter:wght@400;700;900&family=Lora:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;700;900&family=Oswald:wght@400;700&family=Pacifico&family=Playfair+Display:wght@400;700;900&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Playfair+Display:wght@700;900&family=Roboto+Mono&family=Dancing+Script:wght@700&family=Montserrat:wght@800&family=Pacifico&family=Oswald:wght@700&family=Caveat:wght@700&family=Lora:italic,wght@1,700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
-        
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         .loader { border: 4px solid #f3f3f3; border-top: 4px solid #4f46e5; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
@@ -27,8 +19,6 @@
         #historicoContainer::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .btn-instagram { background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); }
         .text-gradient { background: linear-gradient(to right, #4f46e5, #9333ea); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .mp-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; padding: 1rem; }
-        .mp-modal.active { display: flex; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
@@ -48,7 +38,7 @@
     <main class="flex-grow container mx-auto p-4 md:p-6">
         <!-- Banner Superior -->
         <div class="w-full max-w-[728px] h-[90px] mx-auto mb-8 bg-slate-200 flex items-center justify-center rounded-xl overflow-hidden shadow-sm">
-            <a href="https://ocodigodosgenios.vercel.app" target="_blank">
+            <a href="https://ocodigodosgenios.vercel.app" target="_blank" rel="noopener noreferrer">
                 <img src="https://i.postimg.cc/NjpjysQL/O-C-digo-dos-G-nios-970-x-200.png" alt="Anúncio" class="w-full h-full object-cover">
             </a>
         </div>
@@ -56,60 +46,81 @@
         <div class="w-full max-w-4xl mx-auto bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
             <div class="border-b border-slate-100 bg-slate-50/50">
                 <nav class="flex" role="tablist">
-                    <button id="tab-gerador" class="flex-1 py-5 text-center border-b-2 font-bold text-sm text-indigo-600 border-indigo-600 transition uppercase">Criar Post</button>
-                    <button id="tab-historico" class="flex-1 py-5 text-center border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-indigo-600 transition uppercase">Histórico</button>
+                    <button id="tab-gerador" class="flex-1 py-5 text-center border-b-2 font-black text-xs tracking-[0.2em] text-indigo-600 border-indigo-600 transition uppercase">Criar Post</button>
+                    <button id="tab-historico" class="flex-1 py-5 text-center border-b-2 border-transparent font-black text-xs tracking-[0.2em] text-slate-400 hover:text-indigo-600 transition uppercase">Histórico</button>
                 </nav>
             </div>
 
             <div id="content-gerador" class="p-6 md:p-8 space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Seletor de Modo -->
+                <div class="flex justify-center mb-6">
+                    <div class="bg-slate-100 p-1.5 rounded-2xl inline-flex">
+                        <button id="mode-ai" class="px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest bg-white text-indigo-600 shadow-sm transition-all">🤖 Criar com IA</button>
+                        <button id="mode-manual" class="px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest text-slate-400 hover:text-indigo-600 transition-all">✍️ Escrever Frase</button>
+                    </div>
+                </div>
+
+                <!-- Inputs IA -->
+                <div id="ai-inputs" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Palavra-chave</label>
-                        <input type="text" id="termo" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Ex: disciplina, café, marketing...">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.25em] mb-3">Palavra-chave</label>
+                        <input type="text" id="termo" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all placeholder-slate-300 font-bold" placeholder="Ex: disciplina, sucesso...">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Categoria</label>
-                        <select id="categoria" class="w-full px-4 py-3 border border-slate-200 rounded-xl bg-white outline-none focus:ring-2 focus:ring-indigo-500">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.25em] mb-3">Categoria</label>
+                        <select id="categoria" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 font-bold">
                              <option value="motivacional">Motivacional</option>
                              <option value="romantica">Romântica</option>
                              <option value="vendas">Vendas / CTA</option>
                              <option value="produto_digital">Produto Digital</option>
-                             <option value="storytelling">Storytelling</option>
-                             <option value="bem_estar">Bem-estar / Saúde</option>
                              <option value="engracado">Engraçado</option>
                              <option value="reflexao">Reflexão</option>
                         </select>
                     </div>
                 </div>
 
-                <button id="gerarBtn" class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-indigo-700 transition shadow-lg flex items-center justify-center gap-2 uppercase tracking-widest">
-                    GERAR POST COMPLETO
+                <!-- Inputs Manual -->
+                <div id="manual-inputs" class="hidden space-y-6">
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.25em] mb-3">Sua Frase</label>
+                        <textarea id="manualFrase" rows="3" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all placeholder-slate-300 font-bold resize-none" placeholder="Digite sua frase aqui..."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.25em] mb-3">Hashtags (Opcional)</label>
+                        <input type="text" id="manualTags" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all placeholder-slate-300 font-bold" placeholder="#sucesso #foco">
+                    </div>
+                </div>
+
+                <button id="gerarBtn" class="w-full bg-slate-900 text-white font-black py-5 rounded-2xl hover:bg-indigo-600 transition shadow-lg flex items-center justify-center gap-2 uppercase tracking-widest text-sm">
+                    GERAR POST
                 </button>
                 
                 <div id="loading" class="hidden flex flex-col items-center py-6">
                     <div class="loader"></div>
-                    <p class="text-sm text-slate-400 mt-3 font-bold uppercase">Processando...</p>
+                    <p class="text-[10px] text-slate-400 mt-4 font-black tracking-[0.2em] uppercase">Estilizando sua arte...</p>
                 </div>
 
-                <div id="erroMsg" class="hidden p-4 bg-red-50 text-red-600 rounded-xl text-center text-sm font-bold border border-red-100 uppercase"></div>
+                <div id="erroMsg" class="hidden p-5 bg-red-50 text-red-600 rounded-2xl text-center text-xs font-black border border-red-100 uppercase tracking-widest"></div>
 
-                <div id="resultado" class="hidden fade-in space-y-8 border-t border-slate-100 pt-8">
+                <!-- RESULTADO -->
+                <div id="resultado" class="hidden fade-in space-y-10 border-t border-slate-100 pt-10">
+                    
                     <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Legenda Sugerida</h3>
-                            <button id="copiarBtn" class="bg-white px-4 py-1.5 rounded-full border border-slate-200 text-indigo-600 text-[10px] font-black hover:bg-indigo-600 hover:text-white transition-all uppercase">Copiar</button>
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Legenda Pronta</h3>
+                            <button id="copiarBtn" class="bg-white px-4 py-1.5 rounded-full border border-slate-200 text-indigo-600 text-[10px] font-black hover:bg-indigo-600 hover:text-white transition-all shadow-sm uppercase tracking-widest">Copiar</button>
                         </div>
-                        <p id="fraseGerada" class="text-lg text-slate-800 font-medium italic leading-relaxed"></p>
-                        <p id="hashtagsGeradas" class="text-indigo-600 font-bold text-sm"></p>
+                        <p id="fraseGerada" class="text-xl text-slate-800 leading-relaxed font-semibold italic"></p>
+                        <p id="hashtagsGeradas" class="text-indigo-500 font-black text-sm tracking-tight"></p>
                     </div>
 
-                    <div class="flex flex-col items-center gap-4 text-center">
-                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Escolha o Formato</span>
-                        <!-- CORREÇÃO: Grid de 3 colunas para garantir lado a lado -->
-                        <div class="grid grid-cols-3 gap-2 w-full p-1 bg-slate-100 rounded-2xl">
-                            <button data-format="1:1" class="format-btn py-2.5 bg-white text-indigo-600 text-[10px] md:text-xs font-black rounded-xl shadow-sm uppercase">FEED</button>
-                            <button data-format="9:16" class="format-btn py-2.5 text-slate-500 text-[10px] md:text-xs font-black rounded-xl hover:bg-white/50 uppercase">STORY</button>
-                            <button data-format="16:9" class="format-btn py-2.5 text-slate-500 text-[10px] md:text-xs font-black rounded-xl hover:bg-white/50 uppercase">WIDE</button>
+                    <div class="flex flex-col items-center gap-5">
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Tamanho da Imagem</span>
+                        <div class="flex p-2 bg-slate-100 rounded-full gap-2">
+                            <button data-format="1:1" class="format-btn px-8 py-3 bg-white text-indigo-600 text-[11px] font-black rounded-full shadow-lg transition-all uppercase tracking-widest">Feed (1:1)</button>
+                            <button data-format="9:16" class="format-btn px-8 py-3 text-slate-500 text-[11px] font-black rounded-full hover:bg-white/50 transition-all uppercase tracking-widest">Story (9:16)</button>
+                            <button data-format="16:9" class="format-btn px-8 py-3 text-slate-500 text-[11px] font-black rounded-full hover:bg-white/50 transition-all uppercase tracking-widest">Wide (16:9)</button>
                         </div>
                     </div>
 
@@ -117,69 +128,88 @@
                         <canvas id="canvas"></canvas>
                     </div>
 
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 space-y-6 shadow-sm">
-                        <div class="flex border-b border-slate-200">
-                            <button id="tab-custom-fundo" class="custom-tab-btn flex-1 py-3 text-center border-b-2 font-bold text-xs text-indigo-600 border-indigo-600 transition uppercase tracking-widest">Fundo</button>
-                            <button id="tab-custom-texto" class="custom-tab-btn flex-1 py-3 text-center border-b-2 border-transparent font-medium text-xs text-slate-500 hover:text-indigo-600 transition uppercase tracking-widest">Texto</button>
-                            <button id="tab-custom-logo" class="custom-tab-btn flex-1 py-3 text-center border-b-2 border-transparent font-medium text-xs text-slate-500 hover:text-indigo-600 transition uppercase tracking-widest">Logo</button>
-                        </div>
-
-                        <div id="content-custom-fundo" class="space-y-4 custom-tab-content">
-                            <div class="flex gap-2">
-                                <button id="bg-type-color" class="bg-type-btn flex-1 py-2 px-3 rounded-lg text-xs font-bold bg-indigo-600 text-white uppercase transition">Cor</button>
-                                <button id="bg-type-image" class="bg-type-btn flex-1 py-2 px-3 rounded-lg text-xs font-bold bg-slate-100 text-slate-500 uppercase">Imagem</button>
-                            </div>
-                            <div id="bg-color-controls">
-                                <input type="color" id="corFundo" value="#4f46e5" class="w-full h-10 p-1 border border-slate-200 rounded-lg cursor-pointer">
-                            </div>
-                            <div id="bg-image-controls" class="hidden space-y-4">
-                                <label for="bgUpload" class="flex items-center justify-center w-full h-24 border-2 border-slate-200 border-dashed rounded-lg cursor-pointer hover:border-indigo-600">
-                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Upload Imagem</span>
-                                    <input type="file" id="bgUpload" class="hidden" accept="image/png, image/jpeg">
-                                </label>
-                                <input type="range" id="overlayOpacity" min="0" max="1" step="0.05" value="0.5" class="w-full h-2 bg-slate-200 rounded-full appearance-none cursor-pointer">
-                            </div>
-                        </div>
-
-                        <div id="content-custom-texto" class="hidden space-y-4 custom-tab-content">
-                            <input type="color" id="corTexto" value="#FFFFFF" class="w-full h-10 p-1 border border-slate-200 rounded-lg cursor-pointer">
-                            <select id="fonteTexto" class="w-full px-4 py-2 border border-slate-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-indigo-500 font-bold uppercase text-xs tracking-widest">
-                                <optgroup label="Modernas">
-                                    <option value="Inter" selected>Modern (Inter)</option>
-                                    <option value="Montserrat">Impacto (Montserrat)</option>
-                                    <option value="Roboto Mono">Code (Mono)</option>
-                                </optgroup>
-                                <optgroup label="Sofisticadas">
-                                    <option value="Playfair Display">Elegant (Playfair)</option>
-                                    <option value="Lora">Clássica (Lora)</option>
-                                </optgroup>
-                                <optgroup label="Criativas">
-                                    <option value="Oswald">Bold (Oswald)</option>
-                                    <option value="Pacifico">Divertida (Pacifico)</option>
-                                    <option value="Dancing Script">Escrita (Dancing)</option>
-                                    <option value="Caveat">Manual (Caveat)</option>
-                                </optgroup>
-                            </select>
+                    <div class="bg-white p-8 md:p-10 rounded-[2.5rem] border border-slate-100 space-y-8 shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em]">Personalização</h3>
                         </div>
                         
-                        <div id="content-custom-logo" class="hidden space-y-4 custom-tab-content">
-                             <div class="flex items-center gap-2">
-                                <label for="logoUpload" class="flex-1 cursor-pointer bg-slate-900 text-white text-center py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-indigo-600 transition shadow-md">Carregar Logo PNG</label>
+                        <div class="flex border-b border-slate-100">
+                            <button id="tab-custom-fundo" class="custom-tab-btn flex-1 py-4 text-center border-b-2 font-black text-[10px] text-indigo-600 border-indigo-600 transition uppercase tracking-widest">Fundo</button>
+                            <button id="tab-custom-texto" class="custom-tab-btn flex-1 py-4 text-center border-b-2 border-transparent font-black text-[10px] text-slate-400 hover:text-indigo-600 transition uppercase tracking-widest">Letras</button>
+                            <button id="tab-custom-logo" class="custom-tab-btn flex-1 py-4 text-center border-b-2 border-transparent font-black text-[10px] text-slate-400 hover:text-indigo-600 transition uppercase tracking-widest">Minha Logo</button>
+                        </div>
+
+                        <div id="content-custom-fundo" class="space-y-6 custom-tab-content">
+                            <div class="flex gap-3">
+                                <button id="bg-type-color" class="bg-type-btn flex-1 py-4 rounded-2xl text-[10px] font-black bg-indigo-600 text-white uppercase transition tracking-[0.2em]">Cor</button>
+                                <button id="bg-type-image" class="bg-type-btn flex-1 py-4 rounded-2xl text-[10px] font-black bg-slate-50 text-slate-400 uppercase hover:bg-slate-100 transition tracking-[0.2em]">Foto</button>
+                            </div>
+                            <div id="bg-color-controls">
+                                <label for="corFundo" class="block text-[10px] font-black text-slate-400 uppercase mb-3">Selecione o Tom</label>
+                                <input type="color" id="corFundo" value="#4f46e5" class="w-full h-14 p-1 border border-slate-100 rounded-2xl cursor-pointer bg-white shadow-sm">
+                            </div>
+                            <div id="bg-image-controls" class="hidden space-y-6">
+                                <label for="bgUpload" class="flex items-center justify-center w-full h-28 transition bg-slate-50 border-2 border-slate-100 border-dashed rounded-[2rem] cursor-pointer hover:border-indigo-500">
+                                    <span class="flex items-center space-x-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                        <span class="text-[11px] font-black text-slate-500 uppercase tracking-widest">Trocar Imagem</span>
+                                    </span>
+                                    <input type="file" id="bgUpload" class="hidden" accept="image/png, image/jpeg">
+                                </label>
+                                <div>
+                                    <label for="overlayOpacity" class="block text-[10px] font-black text-slate-400 uppercase mb-3 tracking-widest">Escurecer Fundo</label>
+                                    <input type="range" id="overlayOpacity" min="0" max="1" step="0.05" value="0.5" class="w-full h-2 bg-slate-100 rounded-full appearance-none cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="content-custom-texto" class="hidden space-y-6 custom-tab-content">
+                            <div>
+                                <label for="corTexto" class="block text-[10px] font-black text-slate-400 uppercase mb-3 tracking-widest">Cor das Letras</label>
+                                <input type="color" id="corTexto" value="#FFFFFF" class="w-full h-14 p-1 border border-slate-100 rounded-2xl cursor-pointer bg-white shadow-sm">
+                            </div>
+                            <div>
+                                <label for="fonteTexto" class="block text-[10px] font-black text-slate-400 uppercase mb-3 tracking-widest">Escolha a Fonte</label>
+                                <select id="fonteTexto" class="w-full px-6 py-5 border border-slate-100 rounded-2xl bg-slate-50 outline-none focus:ring-2 focus:ring-indigo-500 transition-all text-xs font-black uppercase tracking-[0.2em] cursor-pointer">
+                                    <optgroup label="Modernas">
+                                        <option value="Inter" selected>Modern (Inter)</option>
+                                        <option value="Montserrat">Impacto (Montserrat)</option>
+                                        <option value="Roboto Mono">Code (Mono)</option>
+                                    </optgroup>
+                                    <optgroup label="Sofisticadas">
+                                        <option value="Playfair Display">Elegant (Playfair)</option>
+                                        <option value="Lora">Clássica (Lora)</option>
+                                    </optgroup>
+                                    <optgroup label="Criativas">
+                                        <option value="Oswald">Bold (Oswald)</option>
+                                        <option value="Pacifico">Divertida (Pacifico)</option>
+                                        <option value="Dancing Script">Escrita (Dancing)</option>
+                                        <option value="Caveat">Manual (Caveat)</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div id="content-custom-logo" class="hidden space-y-6 custom-tab-content">
+                             <div class="flex items-center gap-3">
+                                <label for="logoUpload" class="flex-1 cursor-pointer bg-slate-900 text-white text-center py-5 rounded-2xl text-[11px] font-black uppercase tracking-[0.3em] hover:bg-indigo-600 transition-all shadow-xl">Enviar Logo PNG</label>
                                 <input type="file" id="logoUpload" class="hidden" accept="image/png">
-                                <button id="removerLogoBtn" class="bg-slate-100 p-3 rounded-xl text-slate-400 hover:text-red-500 transition shadow-sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm-2.5 1a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m3 0a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/></svg></button>
+                                <button id="removerLogoBtn" class="bg-slate-50 p-5 rounded-2xl text-slate-300 hover:text-red-500 transition-all border border-slate-100">
+                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm-2.5 1a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m3 0a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/></svg>
+                                </button>
                              </div>
                         </div>
                     </div>
 
-                    <div class="pt-8 border-t border-slate-100 text-center">
+                    <div class="pt-10 border-t border-slate-100 text-center">
                         <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6">COMPARTILHE SUA FRASE</h3>
-                        <div class="grid grid-cols-2 md:grid-cols-6 gap-3">
-                            <a id="whatsappShareBtn" target="_blank" class="bg-[#25D366] text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase tracking-widest">WhatsApp</a>
-                            <button id="instagramBtn" class="btn-instagram text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase tracking-widest">Instagram</button>
-                            <a id="twitterShareBtn" target="_blank" class="bg-black text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase tracking-widest">Twitter</a>
-                            <a id="facebookShareBtn" target="_blank" class="bg-[#1877F2] text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase tracking-widest">Facebook</a>
-                            <a id="pinterestShareBtn" target="_blank" class="bg-[#E60023] text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase tracking-widest">Pinterest</a>
-                            <button id="downloadBtn" class="bg-indigo-600 text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase tracking-widest">Salvar</button>
+                        <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+                            <a id="whatsappShareBtn" target="_blank" class="bg-[#25D366] text-white py-5 rounded-2xl text-[10px] font-black text-center shadow-lg shadow-green-100 uppercase tracking-widest hover:opacity-90 transition-all">WhatsApp</a>
+                            <button id="instagramBtn" class="btn-instagram text-white py-5 rounded-2xl text-[10px] font-black text-center shadow-lg shadow-pink-100 uppercase tracking-widest hover:opacity-90 transition-all">Instagram</button>
+                            <a id="twitterShareBtn" target="_blank" class="bg-black text-white py-5 rounded-2xl text-[10px] font-black text-center shadow-lg shadow-slate-200 uppercase tracking-widest hover:opacity-90 transition-all">Twitter</a>
+                            <a id="facebookShareBtn" target="_blank" class="bg-[#1877F2] text-white py-5 rounded-2xl text-[10px] font-black text-center shadow-lg shadow-blue-100 uppercase tracking-widest hover:opacity-90 transition-all">Facebook</a>
+                            <a id="pinterestShareBtn" target="_blank" class="bg-[#E60023] text-white py-5 rounded-2xl text-[10px] font-black text-center shadow-lg shadow-red-100 uppercase tracking-widest hover:opacity-90 transition-all">Pinterest</a>
+                            <button id="downloadBtn" class="bg-indigo-600 text-white py-5 rounded-2xl text-[10px] font-black hover:bg-indigo-700 transition shadow-lg shadow-indigo-100 uppercase tracking-widest">Salvar Imagem</button>
                         </div>
                     </div>
                 </div>
@@ -187,14 +217,14 @@
 
             <div id="content-historico" class="hidden p-6 md:p-8 space-y-6">
                 <div id="historicoContainer" class="space-y-4 max-h-[600px] overflow-y-auto pr-2">
-                    <p class="text-center text-slate-400 py-10 font-bold uppercase text-[10px] tracking-widest">Aguardando sua primeira criação...</p>
+                    <p class="text-center text-slate-400 py-10 font-bold uppercase text-[10px] tracking-widest">Histórico vazio.</p>
                 </div>
             </div>
         </div>
         
         <!-- Banner Inferior -->
-        <div class="w-full max-w-[728px] h-[90px] mx-auto mt-10 bg-slate-200 flex items-center justify-center rounded-2xl overflow-hidden shadow-sm border border-slate-100">
-            <a href="https://comparamaq.com.br" target="_blank">
+        <div class="w-full max-w-[728px] h-[90px] mx-auto mt-12 bg-slate-200 flex items-center justify-center rounded-2xl overflow-hidden shadow-sm border border-slate-100">
+            <a href="https://comparamaq.com.br" target="_blank" rel="noopener noreferrer">
                 <img src="https://i.supaimg.com/60bdb364-1825-450c-9087-e31171bfcf11.png" alt="Compara Maq" class="w-full h-full object-cover">
             </a>
         </div>
@@ -203,15 +233,21 @@
     <footer class="bg-white border-t border-slate-100 py-12 text-center text-xs text-slate-400 font-black uppercase tracking-widest">
         <div class="container mx-auto px-4">
             <div class="flex flex-wrap justify-center items-center gap-x-8 gap-y-4 mb-8">
-                <a href="https://ativar-bonus-vivo.shop" target="_blank" class="hover:text-indigo-600 transition">10GB Vivo Easy</a>
-                <a href="https://conectar-blue.vercel.app" target="_blank" class="hover:text-indigo-600 transition">1Ano GRÁTIS Conectar</a>
-                <a href="https://hubsmart.vercel.app" target="_blank" class="hover:text-indigo-600 transition">Agregador IA</a>
+                <a href="https://ativar-bonus-vivo.shop" target="_blank" class="hover:text-indigo-600 transition whitespace-nowrap font-bold text-slate-500">10GB Vivo Easy</a>
+                <a href="https://conectar-blue.vercel.app" target="_blank" class="hover:text-indigo-600 transition whitespace-nowrap font-bold text-slate-500">1Ano GRÁTIS Conectar</a>
+                <a href="https://hubsmart.vercel.app" target="_blank" class="hover:text-indigo-600 transition whitespace-nowrap font-bold text-slate-500">Agregador IA</a>
+                <!-- Links Extras Solicitados -->
+                <a href="#" class="text-slate-300 hover:text-indigo-600 transition whitespace-nowrap font-bold text-slate-500">Link Extra 1</a>
+                <a href="#" class="text-slate-300 hover:text-indigo-600 transition whitespace-nowrap font-bold text-slate-500">Link Extra 2</a>
+                <a href="#" class="text-slate-300 hover:text-indigo-600 transition whitespace-nowrap font-bold text-slate-500">Link Extra 3</a>
             </div>
             <p class="text-slate-300 tracking-[0.3em]">&copy; <span id="ano"></span> geradordefrases.com</p>
         </div>
     </footer>
 
     <script>
+    const CONFIG = { PIXABAY_API_KEY: "" };
+
     document.addEventListener('DOMContentLoaded', () => {
         const els = {
             termo: document.getElementById('termo'), cat: document.getElementById('categoria'), btn: document.getElementById('gerarBtn'),
@@ -219,28 +255,48 @@
             frase: document.getElementById('fraseGerada'), tags: document.getElementById('hashtagsGeradas'), canvas: document.getElementById('canvas'),
             hist: document.getElementById('historicoContainer'), corF: document.getElementById('corFundo'), bgU: document.getElementById('bgUpload'),
             op: document.getElementById('overlayOpacity'), corT: document.getElementById('corTexto'), font: document.getElementById('fonteTexto'),
-            logoU: document.getElementById('logoUpload')
+            logoU: document.getElementById('logoUpload'), modeAi: document.getElementById('mode-ai'), modeManual: document.getElementById('mode-manual'),
+            aiInputs: document.getElementById('ai-inputs'), manualInputs: document.getElementById('manual-inputs'),
+            manualFrase: document.getElementById('manualFrase'), manualTags: document.getElementById('manualTags')
         };
         const ctx = els.canvas.getContext('2d');
         let activeFormat = '1:1', backgroundType = 'color', currentImage = null, uploadedImage = null, uploadedLogo = null;
+        let isManual = false;
 
-        function switchTab(tab) {
-            const isG = tab === 'gerador';
-            document.getElementById('content-gerador').classList.toggle('hidden', !isG);
-            document.getElementById('content-historico').classList.toggle('hidden', isG);
-            document.getElementById('tab-gerador').className = isG ? 'flex-1 py-5 text-center border-b-2 font-bold text-sm text-indigo-600 border-indigo-600 uppercase transition' : 'flex-1 py-5 text-center border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-indigo-600 transition uppercase';
-            document.getElementById('tab-historico').className = !isG ? 'flex-1 py-5 text-center border-b-2 font-bold text-sm text-indigo-600 border-indigo-600 uppercase transition' : 'flex-1 py-5 text-center border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-indigo-600 transition uppercase';
-            if(!isG) renderH();
+        function setMode(manual) {
+            isManual = manual;
+            if(manual) {
+                els.modeManual.className = "px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest bg-white text-indigo-600 shadow-sm transition-all";
+                els.modeAi.className = "px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest text-slate-400 hover:text-indigo-600 transition-all";
+                els.aiInputs.classList.add('hidden'); els.manualInputs.classList.remove('hidden');
+            } else {
+                els.modeAi.className = "px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest bg-white text-indigo-600 shadow-sm transition-all";
+                els.modeManual.className = "px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest text-slate-400 hover:text-indigo-600 transition-all";
+                els.manualInputs.classList.add('hidden'); els.aiInputs.classList.remove('hidden');
+            }
         }
-        document.getElementById('tab-gerador').onclick = () => switchTab('gerador');
-        document.getElementById('tab-historico').onclick = () => switchTab('historico');
+        els.modeAi.onclick = () => setMode(false);
+        els.modeManual.onclick = () => setMode(true);
+
+        function trocarCustomTab(tabName) {
+            document.querySelectorAll('.custom-tab-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById(`content-custom-${tabName}`).classList.remove('hidden');
+            document.querySelectorAll('.custom-tab-btn').forEach(b => {
+                b.classList.remove('text-indigo-600', 'border-indigo-600');
+                b.classList.add('text-slate-400', 'border-transparent');
+            });
+            document.getElementById(`tab-custom-${tabName}`).classList.add('text-indigo-600', 'border-indigo-600');
+        }
+        document.getElementById('tab-custom-fundo').onclick = () => trocarCustomTab('fundo');
+        document.getElementById('tab-custom-texto').onclick = () => trocarCustomTab('texto');
+        document.getElementById('tab-custom-logo').onclick = () => trocarCustomTab('logo');
 
         function setBgType(type) {
             backgroundType = type;
             document.getElementById('bg-color-controls').classList.toggle('hidden', type !== 'color');
             document.getElementById('bg-image-controls').classList.toggle('hidden', type !== 'image');
-            document.getElementById('bg-type-color').className = `bg-type-btn flex-1 py-2 px-3 rounded-lg text-xs font-bold uppercase transition ${type === 'color' ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 text-slate-500'}`;
-            document.getElementById('bg-type-image').className = `bg-type-btn flex-1 py-2 px-3 rounded-lg text-xs font-bold uppercase transition ${type === 'image' ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 text-slate-500'}`;
+            document.getElementById('bg-type-color').className = `bg-type-btn flex-1 py-4 rounded-2xl text-[10px] font-black uppercase transition ${type === 'color' ? 'bg-indigo-600 text-white shadow-xl' : 'bg-slate-50 text-slate-400'}`;
+            document.getElementById('bg-type-image').className = `bg-type-btn flex-1 py-4 rounded-2xl text-[10px] font-black uppercase transition ${type === 'image' ? 'bg-indigo-600 text-white shadow-xl' : 'bg-slate-50 text-slate-400'}`;
             desenharCanvas();
         }
         document.getElementById('bg-type-color').onclick = () => setBgType('color');
@@ -250,7 +306,11 @@
             const reader = new FileReader();
             reader.onload = (ev) => {
                 const img = new Image();
-                img.onload = () => { if (isLogo) uploadedLogo = img; else { uploadedImage = img; currentImage = null; setBgType('image'); } desenharCanvas(); };
+                img.onload = () => { 
+                    if (isLogo) uploadedLogo = img; 
+                    else { uploadedImage = img; setBgType('image'); } 
+                    desenharCanvas(); 
+                };
                 img.src = ev.target.result;
             };
             reader.readAsDataURL(e.target.files[0]);
@@ -260,48 +320,76 @@
         document.getElementById('removerLogoBtn').onclick = () => { uploadedLogo = null; desenharCanvas(); };
         [els.corF, els.op, els.corT, els.font].forEach(el => el.oninput = desenharCanvas);
 
-        async function gerar() {
-            const t = els.termo.value.trim(); if (!t) return;
+        async function buscarImagem(query) {
+            if (!CONFIG.PIXABAY_API_KEY) return null;
+            try {
+                const data = await fetch(`https://pixabay.com/api/?key=${CONFIG.PIXABAY_API_KEY}&q=${encodeURIComponent(query)}&image_type=photo&orientation=horizontal&per_page=3`);
+                const res = await data.json();
+                return res.hits?.[0]?.largeImageURL || null;
+            } catch (e) { return null; }
+        }
+
+        async function processarGeracao() {
             els.loading.classList.remove('hidden'); els.res.classList.add('hidden'); els.erro.classList.add('hidden'); els.btn.disabled = true;
             try {
-                const response = await fetch('/api/proxy', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ termo: t, categoria: els.cat.value })
-                });
-                const res = await response.json();
-                if (res.error) throw new Error(res.error);
-                els.frase.textContent = `"${res.frase}"`; els.tags.textContent = res.hashtags.join(' ');
-                currentImage = null; setBgType('color'); els.res.classList.remove('hidden'); desenharCanvas();
-                saveHist({ ...res, ts: Date.now() }); updateSocial();
-            } catch (err) { els.erro.textContent = err.message; els.erro.classList.remove('hidden'); }
+                if (isManual) {
+                    const txt = els.manualFrase.value.trim();
+                    if (!txt) throw new Error("Por favor, digite sua frase.");
+                    els.frase.textContent = `"${txt}"`; els.tags.textContent = els.manualTags.value;
+                    if (!uploadedImage) { setBgType('color'); } else { setBgType('image'); }
+                    els.res.classList.remove('hidden'); desenharCanvas();
+                    saveHist({ frase: txt, hashtags: els.manualTags.value.split(' '), ts: Date.now() }); updateSocial();
+                } else {
+                    const t = els.termo.value.trim(); if (!t) throw new Error("Digite uma palavra-chave.");
+                    const response = await fetch('/api/proxy', {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ termo: t, categoria: els.cat.value })
+                    });
+                    const res = await response.json();
+                    if (res.error) throw new Error(res.error);
+                    const imgUrl = await buscarImagem(t);
+                    els.frase.textContent = `"${res.frase}"`; els.tags.textContent = res.hashtags.join(' ');
+                    if (!uploadedImage) {
+                        if (imgUrl) {
+                            currentImage = new Image(); currentImage.crossOrigin = "anonymous"; currentImage.src = imgUrl;
+                            currentImage.onload = () => { setBgType('image'); els.res.classList.remove('hidden'); desenharCanvas(); };
+                        } else { currentImage = null; setBgType('color'); els.res.classList.remove('hidden'); desenharCanvas(); }
+                    } else { setBgType('image'); els.res.classList.remove('hidden'); desenharCanvas(); }
+                    saveHist({ ...res, ts: Date.now() }); updateSocial();
+                }
+            } catch (err) { els.erro.textContent = err.message; els.erro.classList.remove('hidden'); } 
             finally { els.loading.classList.add('hidden'); els.btn.disabled = false; }
         }
 
         function desenharCanvas() {
             const [wR, hR] = activeFormat.split(':').map(Number);
             els.canvas.width = 1080; els.canvas.height = (1080 * hR) / wR;
-            if (backgroundType === 'image' && (uploadedImage || currentImage)) {
+            
+            if (backgroundType === 'image') {
                 const img = uploadedImage || currentImage;
-                const sc = Math.max(els.canvas.width / img.width, els.canvas.height / img.height);
-                ctx.drawImage(img, (els.canvas.width/2)-(img.width*sc/2), (els.canvas.height/2)-(img.height*sc/2), img.width*sc, img.height*sc);
-                ctx.fillStyle = `rgba(0,0,0,${els.op.value})`; ctx.fillRect(0,0,els.canvas.width,els.canvas.height);
+                if (img) {
+                    const sc = Math.max(els.canvas.width / img.width, els.canvas.height / img.height);
+                    ctx.drawImage(img, (els.canvas.width/2)-(img.width*sc/2), (els.canvas.height/2)-(img.height*sc/2), img.width*sc, img.height*sc);
+                    ctx.fillStyle = `rgba(0,0,0,${els.op.value})`; ctx.fillRect(0,0,els.canvas.width,els.canvas.height);
+                } else { ctx.fillStyle = els.corF.value; ctx.fillRect(0,0,els.canvas.width,els.canvas.height); }
             } else {
                 ctx.fillStyle = els.corF.value; ctx.fillRect(0,0,els.canvas.width,els.canvas.height);
             }
+            
             ctx.fillStyle = els.corT.value; ctx.textAlign = "center"; ctx.textBaseline = "middle";
             let fS = activeFormat === '9:16' ? 75 : 65; 
-            // CORREÇÃO: Usar o valor da fonte selecionada
             ctx.font = `bold ${fS}px '${els.font.value}'`;
             wrap(ctx, els.frase.textContent, els.canvas.width/2, els.canvas.height/2, els.canvas.width*0.8, fS*1.3);
             
-            // Marca d'água fixa
+            // Marca d'água permanente
             ctx.font = "bold 28px Inter"; ctx.fillStyle = "rgba(255,255,255,0.4)";
             ctx.fillText("geradordefrases.com", els.canvas.width/2, els.canvas.height - 40);
 
             if (uploadedLogo) {
-                const hL = els.canvas.height * 0.12, wL = (uploadedLogo.width * hL) / uploadedLogo.height;
-                ctx.drawImage(uploadedLogo, (els.canvas.width-wL)/2, els.canvas.height-hL-85, wL, hL);
+                const logoHeight = els.canvas.height * 0.12; 
+                const logoWidth = (uploadedLogo.width * logoHeight) / uploadedLogo.height;
+                const logoY = els.canvas.height - logoHeight - 85;
+                ctx.drawImage(uploadedLogo, (els.canvas.width - logoWidth) / 2, logoY, logoWidth, logoHeight);
             }
         }
 
@@ -328,9 +416,10 @@
         };
         function renderH() {
             const h = JSON.parse(localStorage.getItem('hist_vFinal') || '[]');
-            els.hist.innerHTML = h.map(i => `
+            els.hist.innerHTML = h.map((i, index) => `
                 <div class="p-6 bg-slate-50 border border-slate-100 rounded-2xl flex justify-between items-start gap-4">
                     <div class="flex-1">
+                        <span class="text-[10px] font-black text-indigo-300 uppercase tracking-widest mb-1 block">#${h.length - index}</span>
                         <p class="text-slate-800 italic text-sm font-semibold">"${i.frase}"</p>
                         <div class="mt-4 flex gap-4 uppercase font-black text-[10px]">
                             <button onclick="window.copyH('${i.frase}', '${i.hashtags.join(' ')}')" class="text-indigo-600 hover:underline">Copiar</button>
@@ -354,6 +443,21 @@
             alert("Copiado! Abra o Instagram."); window.open('https://instagram.com', '_blank');
         };
 
+        document.getElementById('tab-historico').onclick = () => {
+            document.getElementById('content-gerador').classList.add('hidden');
+            document.getElementById('content-historico').classList.remove('hidden');
+            document.getElementById('tab-historico').className = 'flex-1 py-6 text-center border-b-2 font-black text-xs tracking-[0.2em] text-indigo-600 border-indigo-600 transition uppercase';
+            document.getElementById('tab-gerador').className = 'flex-1 py-6 text-center border-b-2 border-transparent font-black text-xs tracking-[0.2em] text-slate-400 hover:text-indigo-600 transition uppercase';
+            renderH();
+        };
+
+        document.getElementById('tab-gerador').onclick = () => {
+            document.getElementById('content-gerador').classList.remove('hidden');
+            document.getElementById('content-historico').classList.add('hidden');
+            document.getElementById('tab-gerador').className = 'flex-1 py-6 text-center border-b-2 font-black text-xs tracking-[0.2em] text-indigo-600 border-indigo-600 transition uppercase';
+            document.getElementById('tab-historico').className = 'flex-1 py-6 text-center border-b-2 border-transparent font-black text-xs tracking-[0.2em] text-slate-400 hover:text-indigo-600 transition uppercase';
+        };
+
         document.getElementById('copiarBtn').onclick = () => {
             navigator.clipboard.writeText(els.frase.textContent + "\n\n" + els.tags.textContent);
             els.copiarBtn.textContent = "Copiado!"; setTimeout(() => els.copiarBtn.textContent = "Copiar", 2000);
@@ -366,36 +470,13 @@
         document.querySelectorAll('.format-btn').forEach(b => {
             b.onclick = (e) => {
                 activeFormat = e.target.dataset.format;
-                document.querySelectorAll('.format-btn').forEach(x => { x.className = 'format-btn px-6 py-2.5 bg-white text-indigo-600 text-xs font-bold rounded-full shadow-sm' === x.className ? 'format-btn px-6 py-2.5 text-slate-500 text-xs font-bold rounded-full' : 'format-btn px-6 py-2.5 text-slate-500 text-xs font-bold rounded-full' });
-                // Reset classes for all then apply active
-                document.querySelectorAll('.format-btn').forEach(x => x.className = 'format-btn px-6 py-2 text-slate-500 text-xs font-bold rounded-full hover:bg-white/50 transition-all uppercase');
-                e.target.className = 'format-btn px-6 py-2 bg-white text-indigo-600 text-xs font-bold rounded-full shadow-sm transition-all uppercase';
+                document.querySelectorAll('.format-btn').forEach(x => x.className = 'format-btn px-6 py-2 text-slate-500 text-xs font-bold rounded-full transition');
+                e.target.className = 'format-btn px-6 py-2 bg-white text-indigo-600 text-xs font-bold rounded-full shadow-sm transition';
                 desenharCanvas();
             };
         });
 
-        document.getElementById('tab-custom-fundo').onclick = () => {
-            document.querySelectorAll('.custom-tab-content').forEach(c => c.classList.add('hidden'));
-            document.getElementById('content-custom-fundo').classList.remove('hidden');
-            document.querySelectorAll('.custom-tab-btn').forEach(b => b.className = 'custom-tab-btn flex-1 py-3 text-center border-b-2 border-transparent font-medium text-xs text-slate-500 uppercase tracking-widest');
-            document.getElementById('tab-custom-fundo').className = 'custom-tab-btn flex-1 py-3 text-center border-b-2 font-bold text-xs text-indigo-600 border-indigo-600 uppercase tracking-widest';
-        };
-
-        document.getElementById('tab-custom-texto').onclick = () => {
-            document.querySelectorAll('.custom-tab-content').forEach(c => c.classList.add('hidden'));
-            document.getElementById('content-custom-texto').classList.remove('hidden');
-            document.querySelectorAll('.custom-tab-btn').forEach(b => b.className = 'custom-tab-btn flex-1 py-3 text-center border-b-2 border-transparent font-medium text-xs text-slate-500 uppercase tracking-widest');
-            document.getElementById('tab-custom-texto').className = 'custom-tab-btn flex-1 py-3 text-center border-b-2 font-bold text-xs text-indigo-600 border-indigo-600 uppercase tracking-widest';
-        };
-
-        document.getElementById('tab-custom-logo').onclick = () => {
-            document.querySelectorAll('.custom-tab-content').forEach(c => c.classList.add('hidden'));
-            document.getElementById('content-custom-logo').classList.remove('hidden');
-            document.querySelectorAll('.custom-tab-btn').forEach(b => b.className = 'custom-tab-btn flex-1 py-3 text-center border-b-2 border-transparent font-medium text-xs text-slate-500 uppercase tracking-widest');
-            document.getElementById('tab-custom-logo').className = 'custom-tab-btn flex-1 py-3 text-center border-b-2 font-bold text-xs text-indigo-600 border-indigo-600 uppercase tracking-widest';
-        };
-
-        els.btn.onclick = gerar; document.getElementById('ano').textContent = new Date().getFullYear();
+        els.btn.onclick = processarGeracao; document.getElementById('ano').textContent = new Date().getFullYear();
     });
     </script>
 </body>
