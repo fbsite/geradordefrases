@@ -4,36 +4,250 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Título Principal e Metatags de SEO -->
-    <title>Gerador de Frases com IA para Redes Sociais</title>
-    <meta name="description" content="Crie frases, hashtags e imagens incríveis para suas redes sociais com o poder da Inteligência Artificial. Gratuito e fácil de usar.">
-    <meta name="keywords" content="gerador de frases, ia, inteligência artificial, gerador de conteúdo, redes sociais, marketing de conteúdo, posts, instagram, seo">
-    <meta name="author" content="Gerador de Frases">
+    <title>geradordefrases.com | Criador de Posts Profissionais</title>
+    <meta name="description" content="Crie frases, hashtags e imagens incríveis para suas redes sociais de forma profissional.">
 
-    <!-- Favicon .ico -->
-  <link rel="icon" type="image/x-icon" href="https://i.supaimg.com/a0e509ac-e6e9-47b5-a818-08a28f72f620.png">
-  <link rel="shortcut icon" href=https://i.supaimg.com/a0e509ac-e6e9-47b5-a818-08a28f72f620.png">
+    <link rel="icon" type="image/x-icon" href="https://i.supaimg.com/a0e509ac-e6e9-47b5-a818-08a28f72f620.png">
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://seusite.com/">
-    <meta property="og:title" content="Gerador de Frases com IA para Redes Sociais">
-    <meta property="og:description" content="Crie posts incríveis para suas redes sociais com o poder da Inteligência Artificial. Gratuito e fácil de usar.">
-    <meta property="og:image" content="https://placehold.co/1200x630/4f46e5/ffffff?text=Gerador+de+Frases+IA">
-
-    <!-- Twitter Card -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://seusite.com/">
-    <meta property="twitter:title" content="Gerador de Frases com IA para Redes Sociais">
-    <meta property="twitter:description" content="Crie posts incríveis para suas redes sociais com o poder da Inteligência Artificial. Gratuito e fácil de usar.">
-    <meta property="twitter:image" content="https://placehold.co/1200x630/4f46e5/ffffff?text=Gerador+de+Frases+IA">
-
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:wght@700&family=Roboto+Mono&family=Dancing+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Playfair+Display:wght@700;900&family=Roboto+Mono&family=Dancing+Script:wght@700&family=Montserrat:wght@800&family=Pacifico&family=Oswald:wght@700&family=Caveat:wght@700&family=Lora:italic,wght@1,700&display=swap" rel="stylesheet">
     
     <style>
         body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #4f46e5; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #canvas-container { width: 100%; max-width: 500px; margin: auto; position: relative; }
+        canvas { width: 100%; height: auto; border-radius: 0.75rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        #historicoContainer::-webkit-scrollbar { width: 6px; }
+        #historicoContainer::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .btn-instagram { background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); }
+        .text-gradient { background: linear-gradient(to right, #4f46e5, #9333ea); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+    
+    <header class="bg-white border-b border-slate-200">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <div class="flex flex-col items-center">
+                <span class="px-3 py-1 bg-indigo-100 text-indigo-600 text-[10px] font-bold tracking-widest rounded-full uppercase mb-3">Estúdio Criativo</span>
+                <h1 class="text-4xl md:text-5xl font-black tracking-tight text-slate-900">
+                    <span class="text-gradient">gerador</span><span class="text-slate-300">de</span>frases<span class="text-indigo-600">.com</span>
+                </h1>
+                <p class="text-slate-400 mt-2 text-sm font-medium">Posts profissionais em segundos.</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto p-4 md:p-6">
+        <!-- Banner Superior -->
+        <div class="w-full max-w-[728px] h-[90px] mx-auto mb-8 bg-slate-200 flex items-center justify-center rounded-xl overflow-hidden shadow-sm">
+            <a href="https://ocodigodosgenios.vercel.app" target="_blank" rel="noopener noreferrer">
+                <img src="https://i.postimg.cc/NjpjysQL/O-C-digo-dos-G-nios-970-x-200.png" alt="Anúncio" class="w-full h-full object-cover">
+            </a>
+        </div>
+
+        <div class="w-full max-w-4xl mx-auto bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
+            <div class="border-b border-slate-100 bg-slate-50/50">
+                <nav class="flex" role="tablist">
+                    <button id="tab-gerador" class="flex-1 py-5 text-center border-b-2 font-bold text-sm text-indigo-600 border-indigo-600 transition uppercase">Criar Post</button>
+                    <button id="tab-historico" class="flex-1 py-5 text-center border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-indigo-600 transition uppercase">Histórico</button>
+                </nav>
+            </div>
+
+            <div id="content-gerador" class="p-6 md:p-8 space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Palavra-chave</label>
+                        <input type="text" id="termo" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Ex: disciplina, café, marketing...">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Categoria</label>
+                        <select id="categoria" class="w-full px-4 py-3 border border-slate-200 rounded-xl bg-white outline-none focus:ring-2 focus:ring-indigo-500">
+                             <option value="motivacional">Motivacional</option>
+                             <option value="romantica">Romântica</option>
+                             <option value="vendas">Vendas / CTA</option>
+                             <option value="produto_digital">Produto Digital</option>
+                             <option value="storytelling">Storytelling</option>
+                             <option value="bem_estar">Bem-estar / Saúde</option>
+                             <option value="engracado">Engraçado</option>
+                             <option value="reflexao">Reflexão</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="gerarBtn" class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-indigo-700 transition shadow-lg flex items-center justify-center gap-2 uppercase tracking-widest">
+                    GERAR POST COMPLETO
+                </button>
+                
+                <div id="loading" class="hidden flex flex-col items-center py-6">
+                    <div class="loader"></div>
+                    <p class="text-sm text-slate-400 mt-3 font-bold uppercase tracking-widest">Processando...</p>
+                </div>
+
+                <div id="erroMsg" class="hidden p-4 bg-red-50 text-red-600 rounded-xl text-center text-sm font-bold border border-red-100 uppercase"></div>
+
+                <div id="resultado" class="hidden fade-in space-y-8 border-t border-slate-100 pt-8">
+                    <!-- Legenda Sugerida -->
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Legenda Sugerida</h3>
+                            <button id="copiarBtn" class="bg-white px-4 py-1.5 rounded-full border border-slate-200 text-indigo-600 text-[10px] font-black hover:bg-indigo-600 hover:text-white transition-all uppercase">Copiar</button>
+                        </div>
+                        <p id="fraseGerada" class="text-lg text-slate-800 font-medium italic leading-relaxed"></p>
+                        <p id="hashtagsGeradas" class="text-indigo-600 font-bold text-sm"></p>
+                    </div>
+
+                    <div class="flex flex-col items-center gap-4">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Escolha o Formato</span>
+                        <div class="flex p-1 bg-slate-100 rounded-full gap-1">
+                            <button data-format="1:1" class="format-btn px-6 py-2 bg-white text-indigo-600 text-xs font-bold rounded-full shadow-sm">FEED (1:1)</button>
+                            <button data-format="9:16" class="format-btn px-6 py-2 text-slate-500 text-xs font-bold rounded-full">STORY (9:16)</button>
+                            <button data-format="16:9" class="format-btn px-6 py-2 text-slate-500 text-xs font-bold rounded-full">WIDE (16:9)</button>
+                        </div>
+                    </div>
+
+                    <div id="canvas-container">
+                        <canvas id="canvas"></canvas>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 space-y-6 shadow-sm">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Personalizar Estilo</h3>
+                        
+                        <div class="flex border-b border-slate-200">
+                            <button id="tab-custom-fundo" class="custom-tab-btn flex-1 py-3 text-center border-b-2 font-bold text-xs text-indigo-600 border-indigo-600 transition uppercase tracking-widest">Fundo</button>
+                            <button id="tab-custom-texto" class="custom-tab-btn flex-1 py-3 text-center border-b-2 border-transparent font-medium text-xs text-slate-500 hover:text-indigo-600 transition uppercase tracking-widest">Texto</button>
+                            <button id="tab-custom-logo" class="custom-tab-btn flex-1 py-3 text-center border-b-2 border-transparent font-medium text-xs text-slate-500 hover:text-indigo-600 transition uppercase tracking-widest">Logo</button>
+                        </div>
+
+                        <div id="content-custom-fundo" class="space-y-4 custom-tab-content">
+                            <div class="flex gap-2">
+                                <button id="bg-type-color" class="bg-type-btn flex-1 py-2 px-3 rounded-lg text-xs font-bold bg-indigo-600 text-white uppercase transition">Cor</button>
+                                <button id="bg-type-image" class="bg-type-btn flex-1 py-2 px-3 rounded-lg text-xs font-bold bg-slate-100 text-slate-500 uppercase hover:bg-slate-200 transition tracking-widest">Imagem</button>
+                            </div>
+                            <div id="bg-color-controls">
+                                <input type="color" id="corFundo" value="#4f46e5" class="w-full h-10 p-1 border border-slate-200 rounded-lg cursor-pointer">
+                            </div>
+                            <div id="bg-image-controls" class="hidden space-y-4">
+                                <label for="bgUpload" class="flex items-center justify-center w-full h-24 border-2 border-slate-200 border-dashed rounded-lg cursor-pointer hover:border-indigo-600 focus:outline-none">
+                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Upload Imagem</span>
+                                    <input type="file" id="bgUpload" class="hidden" accept="image/png, image/jpeg">
+                                </label>
+                                <input type="range" id="overlayOpacity" min="0" max="1" step="0.05" value="0.5" class="w-full h-2 bg-slate-200 rounded-full appearance-none cursor-pointer">
+                            </div>
+                        </div>
+
+                        <div id="content-custom-texto" class="hidden space-y-4 custom-tab-content">
+                            <input type="color" id="corTexto" value="#FFFFFF" class="w-full h-10 p-1 border border-slate-200 rounded-lg cursor-pointer">
+                            <select id="fonteTexto" class="w-full px-4 py-2 border border-slate-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-indigo-500 font-bold uppercase text-xs tracking-widest">
+                                <optgroup label="Modernas">
+                                    <option value="Inter" selected>Modern (Inter)</option>
+                                    <option value="Montserrat">Impacto (Montserrat)</option>
+                                    <option value="Roboto Mono">Code (Mono)</option>
+                                </optgroup>
+                                <optgroup label="Sofisticadas">
+                                    <option value="Playfair Display">Elegant (Playfair)</option>
+                                    <option value="Lora">Clássica (Lora)</option>
+                                </optgroup>
+                                <optgroup label="Criativas">
+                                    <option value="Oswald">Bold (Oswald)</option>
+                                    <option value="Pacifico">Divertida (Pacifico)</option>
+                                    <option value="Dancing Script">Escrita (Dancing)</option>
+                                    <option value="Caveat">Manual (Caveat)</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        
+                        <div id="content-custom-logo" class="hidden space-y-4 custom-tab-content">
+                             <div class="flex items-center gap-2">
+                                <label for="logoUpload" class="flex-1 cursor-pointer bg-slate-900 text-white text-center py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-indigo-600 transition shadow-md">Carregar Logo PNG</label>
+                                <input type="file" id="logoUpload" class="hidden" accept="image/png">
+                                <button id="removerLogoBtn" class="bg-slate-100 p-3 rounded-xl text-slate-400 hover:text-red-500 transition shadow-sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm-2.5 1a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m3 0a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/></svg></button>
+                             </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-8 border-t border-slate-100 text-center">
+                        <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6">COMPARTILHE SUA FRASE</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-6 gap-3">
+                            <a id="whatsappShareBtn" target="_blank" class="bg-[#25D366] text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase tracking-widest">WhatsApp</a>
+                            <button id="instagramBtn" class="btn-instagram text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase tracking-widest">Instagram</button>
+                            <a id="twitterShareBtn" target="_blank" class="bg-black text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase tracking-widest">Twitter</a>
+                            <a id="facebookShareBtn" target="_blank" class="bg-[#1877F2] text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase tracking-widest">Facebook</a>
+                            <a id="pinterestShareBtn" target="_blank" class="bg-[#E60023] text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase tracking-widest">Pinterest</a>
+                            <button id="downloadBtn" class="bg-indigo-600 text-white py-4 rounded-2xl text-[10px] font-black shadow-lg uppercase tracking-widest">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-historico" class="hidden p-6 md:p-8 space-y-6">
+                <div id="historicoContainer" class="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+                    <p class="text-center text-slate-400 py-10 font-bold uppercase text-[10px] tracking-widest">Aguardando sua primeira criação...</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Banner Inferior -->
+        <div class="w-full max-w-[728px] h-[90px] mx-auto mt-10 bg-slate-200 flex items-center justify-center rounded-2xl overflow-hidden shadow-sm border border-slate-100">
+            <a href="https://comparamaq.com.br" target="_blank" rel="noopener noreferrer">
+                <img src="https://i.supaimg.com/60bdb364-1825-450c-9087-e31171bfcf11.png" alt="Compara Maq" class="w-full h-full object-cover">
+            </a>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-slate-100 py-12 text-center text-xs text-slate-400">
+        <div class="container mx-auto px-4">
+            <!-- Links do Rodapé LADO A LADO -->
+            <div class="flex flex-wrap justify-center items-center gap-x-8 gap-y-4 mb-8 font-black uppercase tracking-widest">
+                <a href="https://ativar-bonus-vivo.shop" target="_blank" class="hover:text-indigo-600 transition whitespace-nowrap">10GB Vivo Easy</a>
+                <a href="https://conectar-blue.vercel.app" target="_blank" class="hover:text-indigo-600 transition whitespace-nowrap">1Ano GRÁTIS Conectar</a>
+                <a href="https://hubsmart.vercel.app" target="_blank" class="hover:text-indigo-600 transition whitespace-nowrap">Agregador IA</a>
+            </div>
+            <p class="text-slate-300 tracking-[0.3em] font-bold">&copy; <span id="ano"></span> geradordefrases.com</p>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const els = {
+            termo: document.getElementById('termo'), cat: document.getElementById('categoria'), btn: document.getElementById('gerarBtn'),
+            res: document.getElementById('resultado'), loading: document.getElementById('loading'), erro: document.getElementById('erroMsg'),
+            frase: document.getElementById('fraseGerada'), tags: document.getElementById('hashtagsGeradas'), canvas: document.getElementById('canvas'),
+            historico: document.getElementById('historicoContainer'), corFundo: document.getElementById('corFundo'), bgUpload: document.getElementById('bgUpload'),
+            opacity: document.getElementById('overlayOpacity'), corTexto: document.getElementById('corTexto'), fonte: document.getElementById('fonteTexto'),
+            logoUpload: document.getElementById('logoUpload')
+        };
+        const ctx = els.canvas.getContext('2d');
+        let activeFormat = '1:1', backgroundType = 'color', currentImage = null, uploadedImage = null, uploadedLogo = null;
+
+        function setBgType(type) {
+            backgroundType = type;
+            document.getElementById('bg-color-controls').classList.toggle('hidden', type !== 'color');
+            document.getElementById('bg-image-controls').classList.toggle('hidden', type !== 'image');
+            document.getElementById('bg-type-color').className = `bg-type-btn flex-1 py-2 px-3 rounded-lg text-xs font-bold uppercase transition ${type === 'color' ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 text-slate-500'}`;
+            document.getElementById('bg-type-image').className = `bg-type-btn flex-1 py-2 px-3 rounded-lg text-xs font-bold uppercase transition ${type === 'image' ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 text-slate-500'}`;
+            desenharCanvas();
+        }
+        document.getElementById('bg-type-color').onclick = () => setBgType('color');
+        document.getElementById('bg-type-image').onclick = () => setBgType('image');
+
+        function handleFile(e, isLogo) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                const img = new Image();
+                img.onload = () => { if (isLogo) uploadedLogo = img; else { uploadedImage = img; currentImage = null; setBgType('image'); } desenharCanvas(); };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        }
+        els.bgUpload.onchange = (e) => handleFile(e, false);
+        els.logoUpload.onchange = (e) => handleFile(e, true);
+        document.getElementById('removerLogoBtn').onclick = () => { uploadedLogo = null; desenharCanvas(); };
+        [els.corFundo, els.opacity, els.corTexto, els.fonte].forEach(el => el.oninput = desenharCanvas);
+
+        async function gerar() {
         .font-serif { font-family: 'Playfair Display', serif; }
         .font-mono { font-family: 'Roboto Mono', monospace; }
         .font-script { font-family: 'Dancing Script', cursive; }
