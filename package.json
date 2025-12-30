@@ -2,5 +2,7 @@
   "name": "gerador-de-frases",
   "version": "1.0.0",
   "type": "module",
-  "dependencies": {}
+  "engines": {
+    "node": "22.x"
+  }
 }
