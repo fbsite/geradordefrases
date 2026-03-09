@@ -15,9 +15,8 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'A chave API (GOOGLE_API_KEY) não foi encontrada nas variáveis da Vercel.' });
     }
 
-    // Tenta o modelo 2.5 solicitado. 
-    // Se sua chave não tiver acesso, troque aqui para "gemini-1.5-flash"
-    const model = "gemini-2.5-flash-preview-09-2025"; 
+    // CORREÇÃO: Utilizando o modelo 1.5-flash que é 100% estável e público
+    const model = "gemini-1.5-flash"; 
     
     const prompt = `Gere uma frase curta e impactante sobre "${termo}" para a categoria "${categoria}". Retorne obrigatoriamente APENAS um JSON puro no formato: {"frase": "texto aqui", "hashtags": ["#tag1", "#tag2"]}`;
 
@@ -33,12 +32,11 @@ export default async function handler(req, res) {
 
         const data = await response.json();
 
-        // SE O GOOGLE DEVOLVER ERRO, MOSTRAMOS O MOTIVO REAL
+        // Tratamento de erros do Google
         if (data.error) {
             console.error("Erro Google:", JSON.stringify(data.error));
-            // Retorna o erro exato para aparecer no seu site
             return res.status(data.error.code || 500).json({ 
-                error: `Erro da IA (${model}): ${data.error.message}` 
+                error: `Erro da IA: ${data.error.message}` 
             });
         }
 
@@ -48,7 +46,7 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: 'A IA respondeu, mas não gerou texto válido.' });
         }
 
-        // Limpeza agressiva para garantir JSON
+        // Limpeza de segurança (remove os ```json caso a IA os coloque)
         const cleanJson = textResponse.replace(/```json/g, '').replace(/```/g, '').trim();
         
         try {
